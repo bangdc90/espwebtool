@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 
 import Header from './components/Header'
 import Home from './components/Home'
-import FileList from './components/FileList'
+import PreBuiltFirmware from './components/PreBuiltFirmware'
 import Output from './components/Output'
 import Buttons from './components/Buttons'
 import Settings from './components/Settings'
@@ -239,11 +239,10 @@ const App = () => {
           </Grid>
         }
 
-        {/* FileUpload Page */}
+        {/* Pre-built Firmware Page */}
         {connected &&
           <Grid item>
-            <FileList
-              uploads={uploads}
+            <PreBuiltFirmware
               setUploads={setUploads}
               chipName={chipName}
             />

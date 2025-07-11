@@ -40,8 +40,8 @@ const Home = (props) => {
                         <Alert severity='info' align='left'>
                             1. Click on Connect<br />
                             2. Plug in your ESP & select the port<br />
-                            3. Add your .bin & set the address<br />
-                            4. Click Program to flash it 😊<br />
+                            3. Select firmware from the list<br />
+                            4. Click Load Firmware, then Program 😊<br />
                         </Alert>
                     </Box>
 

@@ -1,7 +1,31 @@
 # ESP Web Tool
-A web app to flash your ESP32 or ESP8266 through your browser. Open-Source, free, and easy to use.
+A web app to flash your ESP32 or ESP8266 through your browser with pre-built firmware. Open-Source, free, and easy to use.
 
 Have a look [serial.huhn.me](https://esp.huhn.me)
+
+## Features
+- **Multiple firmware options**: Choose from available firmware in the manifest
+- **Firmware selection**: Easy-to-use interface to select desired firmware
+- **Automatic loading**: Firmware list loaded from manifest.json
+- **Chip-specific firmware**: Separate firmware for ESP32 and ESP8266
+- **Web-based**: Works directly in your browser
+- **Cross-platform**: Works on Windows, Mac, Linux
+
+## How it works
+1. Connect your ESP32/ESP8266 to your computer via USB
+2. Open the web app and click "Connect"
+3. Select your device's serial port
+4. Choose firmware from the available list
+5. Click "Load Firmware" to prepare the firmware
+6. Click "Program" to flash the selected firmware
+7. Done! Your device is now flashed with the selected firmware
+
+## Firmware Management
+- **Manifest File**: `public/firmware/manifest.json` contains firmware collection info
+- **Firmware Files**: Binary files stored in `public/firmware/` directory
+- **Supported Chips**: ESP32, ESP8266, ESP32C3, ESP32S2, ESP32S3
+- **Flash Address**: Configurable per firmware build (default: 65536 = 0x10000)
+- **Versioning**: Multiple versions supported for each chip family
 
 ## Credits
 Based on [ESP Web Flasher](https://github.com/NabuCasa/esp-web-flasher)  
