@@ -2,7 +2,7 @@
   "name": "espwebtool",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://localhost",
+  "homepage": "https://bangdc90.github.io/espwebtool",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -18,11 +18,19 @@
     "react-toastify": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "docker:dev": "docker-compose up app-dev",
+    "docker:build": "docker-compose --profile build up build-only",
+    "docker:prod": "docker-compose --profile production up app-prod"
   },
   "eslintConfig": {
     "extends": [
