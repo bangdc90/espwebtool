@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography'
 import Header from './components/Header'
 import Home from './components/Home'
 import PreBuiltFirmware from './components/PreBuiltFirmware'
-import DebugManifest from './components/DebugManifest'
 import Output from './components/Output'
 import Buttons from './components/Buttons'
 import Settings from './components/Settings'
@@ -247,13 +246,6 @@ const App = () => {
               setUploads={setUploads}
               chipName={chipName}
             />
-          </Grid>
-        }
-
-        {/* Debug component - temporary */}
-        {!connected &&
-          <Grid item>
-            <DebugManifest />
           </Grid>
         }
 

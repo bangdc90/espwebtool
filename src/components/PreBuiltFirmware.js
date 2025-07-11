@@ -33,8 +33,17 @@ const PreBuiltFirmware = (props) => {
 
     const loadManifest = async () => {
         try {
-            console.log('Loading manifest from:', '/firmware/manifest.json')
-            const response = await fetch('/firmware/manifest.json')
+            // Add cache busting parameter
+            const timestamp = new Date().getTime()
+            const manifestUrl = `/firmware/manifest.json?t=${timestamp}`
+            console.log('Loading manifest from:', manifestUrl)
+            
+            const response = await fetch(manifestUrl, {
+                cache: 'no-cache',
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
             console.log('Manifest response status:', response.status)
             
             if (!response.ok) {
@@ -58,10 +67,20 @@ const PreBuiltFirmware = (props) => {
             
             // Try alternative path
             try {
-                console.log('Trying alternative path:', './firmware/manifest.json')
-                const response = await fetch('./firmware/manifest.json')
+                const timestamp = new Date().getTime()
+                const altUrl = `./firmware/manifest.json?t=${timestamp}`
+                console.log('Trying alternative path:', altUrl)
+                
+                const response = await fetch(altUrl, {
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                })
+                
                 if (response.ok) {
                     const manifest = await response.json()
+                    console.log('Alternative manifest loaded:', manifest)
                     setFirmwareList(manifest.builds || [])
                     setManifestName(manifest.name || 'Firmware Collection')
                     setManifestLoaded(true)
@@ -212,9 +231,18 @@ const PreBuiltFirmware = (props) => {
             <Typography variant="h6" component="h2" gutterBottom>
                 {manifestName}
             </Typography>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
-                Select firmware to flash
-            </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="body2" color="text.secondary">
+                    Select firmware to flash
+                </Typography>
+                <Button 
+                    size="small" 
+                    onClick={loadManifest}
+                    variant="outlined"
+                >
+                    Reload Manifest
+                </Button>
+            </Box>
             
             <Grid container spacing={2}>
                 {firmwareList.map((firmware, index) => (
