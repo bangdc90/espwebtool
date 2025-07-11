@@ -22,7 +22,7 @@
     {
       "chipFamily": "ESP32C3",
       "version": "1.0.0",
-      "path": "esp32c3-basic.bin",
+      "path": "mochi_v1.bin",
       "address": 65536
     }
   ]
