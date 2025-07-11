@@ -1,0 +1,29 @@
+{
+  "name": "ESP Web Tool Firmware Collection",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "version": "1.0.0",
+      "path": "esp32-basic.bin",
+      "address": 65536
+    },
+    {
+      "chipFamily": "ESP8266",
+      "version": "1.0.0",
+      "path": "esp8266-basic.bin",
+      "address": 65536
+    },
+    {
+      "chipFamily": "ESP32",
+      "version": "2.0.0",
+      "path": "esp32-advanced.bin",
+      "address": 65536
+    },
+    {
+      "chipFamily": "ESP32C3",
+      "version": "1.0.0",
+      "path": "esp32c3-basic.bin",
+      "address": 65536
+    }
+  ]
+}
