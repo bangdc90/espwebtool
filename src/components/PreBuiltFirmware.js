@@ -122,7 +122,7 @@ const PreBuiltFirmware = (props) => {
                 
                 const firmwareFile = {
                     fileName: firmware.path,
-                    offset: firmware.address,
+                    offset: firmware.address, // Keep as string hex format
                     obj: blob,
                     firmwareInfo: firmware
                 }
@@ -138,10 +138,17 @@ const PreBuiltFirmware = (props) => {
             // Update parent component with firmware data
             const firmwareFile = {
                 fileName: firmware.path,
-                offset: firmware.address,
+                offset: firmware.address, // Keep as string hex format like defaultFiles
                 obj: blob,
                 firmwareInfo: firmware
             }
+            
+            console.log('Firmware file prepared for upload:', {
+                fileName: firmwareFile.fileName,
+                offset: firmwareFile.offset,
+                size: blob.size,
+                type: typeof firmwareFile.offset
+            })
             
             props.setUploads([firmwareFile])
             
@@ -203,6 +210,11 @@ const PreBuiltFirmware = (props) => {
     }
 
     const formatAddress = (address) => {
+        // If address is string (hex), add 0x prefix
+        if (typeof address === 'string') {
+            return `0x${address.toUpperCase()}`
+        }
+        // If address is number, convert to hex
         return `0x${address.toString(16).toUpperCase()}`
     }
 

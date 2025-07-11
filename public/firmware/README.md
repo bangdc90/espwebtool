@@ -28,7 +28,13 @@ This directory contains pre-built firmware files for ESP32/ESP8266 devices and a
 - `chipFamily`: Target chip family (ESP32, ESP8266, ESP32C3, ESP32S2, ESP32S3, etc.)
 - `version`: Firmware version
 - `path`: Path to the binary file (relative to firmware directory)
-- `address`: Flash address in decimal (65536 = 0x10000)
+- `address`: Flash address in hex string format (e.g., "10000" for 0x10000)
+
+### Common Flash Addresses:
+- **ESP32/ESP32C3**: "10000" (0x10000) - Application partition
+- **ESP8266**: "0" (0x0) - Boot partition  
+- **Bootloader**: "1000" (0x1000) - ESP32 bootloader
+- **Partition table**: "8000" (0x8000) - ESP32 partition table
 
 ## Usage
 1. The web app automatically loads manifest.json when connecting
