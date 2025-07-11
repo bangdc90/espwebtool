@@ -33,12 +33,17 @@ const PreBuiltFirmware = (props) => {
 
     const loadManifest = async () => {
         try {
+            console.log('Loading manifest from:', '/firmware/manifest.json')
             const response = await fetch('/firmware/manifest.json')
+            console.log('Manifest response status:', response.status)
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
             
             const manifest = await response.json()
+            console.log('Manifest loaded:', manifest)
+            
             setFirmwareList(manifest.builds || [])
             setManifestName(manifest.name || 'Firmware Collection')
             setManifestLoaded(true)
@@ -50,6 +55,23 @@ const PreBuiltFirmware = (props) => {
         } catch (error) {
             console.error('Error loading manifest:', error)
             setManifestLoaded(false)
+            
+            // Try alternative path
+            try {
+                console.log('Trying alternative path:', './firmware/manifest.json')
+                const response = await fetch('./firmware/manifest.json')
+                if (response.ok) {
+                    const manifest = await response.json()
+                    setFirmwareList(manifest.builds || [])
+                    setManifestName(manifest.name || 'Firmware Collection')
+                    setManifestLoaded(true)
+                    if (manifest.builds && manifest.builds.length > 0) {
+                        setSelectedFirmware(manifest.builds[0])
+                    }
+                }
+            } catch (altError) {
+                console.error('Alternative path also failed:', altError)
+            }
         }
     }
 
@@ -59,10 +81,35 @@ const PreBuiltFirmware = (props) => {
         setLoadingStatus('loading')
         
         try {
-            const response = await fetch(`/firmware/${firmware.path}`)
+            const firmwarePath = `/firmware/${firmware.path}`
+            console.log('Loading firmware from:', firmwarePath)
+            
+            const response = await fetch(firmwarePath)
+            console.log('Firmware response status:', response.status)
             
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
+                // Try alternative path
+                const altPath = `./firmware/${firmware.path}`
+                console.log('Trying alternative firmware path:', altPath)
+                const altResponse = await fetch(altPath)
+                
+                if (!altResponse.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                
+                const blob = await altResponse.blob()
+                setFirmwareBlob(blob)
+                setLoadingStatus('loaded')
+                
+                const firmwareFile = {
+                    fileName: firmware.path,
+                    offset: firmware.address,
+                    obj: blob,
+                    firmwareInfo: firmware
+                }
+                
+                props.setUploads([firmwareFile])
+                return
             }
             
             const blob = await response.blob()
