@@ -2,20 +2,23 @@
   "name": "ESP Web Tool Firmware Collection",
   "builds": [
     {
+      "title": "ESP32 Basic Firmware",
       "chipFamily": "ESP32",
-      "version": "1.0.0",
+      "description": "Basic firmware for ESP32 development",
       "path": "esp32-basic.bin",
       "address": "10000"
     },
     {
+      "title": "ESP32 Advanced IoT Firmware",
       "chipFamily": "ESP32",
-      "version": "2.0.0",
+      "description": "Advanced firmware with IoT features",
       "path": "esp32-advanced.bin",
       "address": "10000"
     },
     {
+      "title": "Dasai Mochi V1 với cảm biến chạm",
       "chipFamily": "ESP32C3",
-      "version": "1.0.0",
+      "description": "FW cho mochi V1 với các chức năng:\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
       "path": "mochi_v1.bin",
       "address": "10000"
     }
