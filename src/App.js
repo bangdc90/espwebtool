@@ -16,7 +16,7 @@ import Settings from './components/Settings'
 import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 
-import { connectESP, formatMacAddr, sleep, loadFiles, supported } from './lib/esp'
+import { connectESP, formatMacAddr, sleep, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
 
 const App = () => {
@@ -27,7 +27,6 @@ const App = () => {
   const [uploads, setUploads] = React.useState([]) // Uploaded Files
   const [settingsOpen, setSettingsOpen] = React.useState(false) // Settings Window
   const [settings, setSettings] = React.useState({...defaultSettings}) // Settings
-  const [confirmErase, setConfirmErase] = React.useState(false) // Confirm Erase Window
   const [confirmProgram, setConfirmProgram] = React.useState(false) // Confirm Flash Window
   const [flashing, setFlashing] = React.useState(false) // Enable/Disable buttons
   const [chipName, setChipName] = React.useState('') // ESP8266 or ESP32
@@ -98,7 +97,6 @@ const App = () => {
       })
 
       setEspStub(newEspStub)
-      setUploads(await loadFiles(esploader.chipName))
       setChipName(esploader.chipName)
     } catch (err) {
       const shortErrMsg = `${err}`.replace('Error: ','')
@@ -115,34 +113,6 @@ const App = () => {
       await esploader.disconnect()
     } finally {
       setConnecting(false)
-    }
-  }
-
-  // Erase firmware on ESP
-  const erase = async () => {
-    setConfirmErase(false)
-    setFlashing(true)
-    toast(`Erasing flash memory. Please wait...`, { position: 'top-center', toastId: 'erase', autoClose: false })
-
-    try {
-      const stamp = Date.now()
-
-      addOutput(`Start erasing`)
-      const interval = setInterval(() => {
-        addOutput(`Erasing flash memory. Please wait...`)
-      }, 3000)
-
-      await espStub.eraseFlash()
-
-      clearInterval(interval)
-      addOutput(`Finished. Took ${Date.now() - stamp}ms to erase.`)
-      toast.update('erase', { render: 'Finished erasing memory.', type: toast.TYPE.INFO, autoClose: 3000 })
-    } catch (e) {
-      addOutput(`ERROR!\n${e}`)
-      toast.update('erase', { render: `ERROR!\n${e}`, type: toast.TYPE.ERROR, autoClose: 3000 })
-      console.error(e)
-    } finally {
-      setFlashing(false)
     }
   }
 
@@ -249,11 +219,10 @@ const App = () => {
           </Grid>
         }
 
-        {/* Erase & Program Buttons */}
+        {/* Program Button */}
         {connected &&
           <Grid item>
             <Buttons
-              erase={() => setConfirmErase(true)}
               program={() => setConfirmProgram(true)}
               disabled={flashing}
             />
@@ -275,14 +244,6 @@ const App = () => {
         setSettings={setSettings}
         settings={settings}
         connected={connected}
-      />
-
-      {/* Confirm Erase Window */}
-      <ConfirmWindow
-        open={confirmErase}
-        text={'This will erase the memory of your ESP.'}
-        onOk={erase}
-        onCancel={() => setConfirmErase(false)}
       />
 
       {/* Confirm Flash/Program Window */}

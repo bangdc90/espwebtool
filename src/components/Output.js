@@ -6,8 +6,6 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import Button from '@mui/material/Button'
 
 import { setCookie, getCookie } from '../lib/cookie.js'
 import styles from './Output.module.css'
@@ -65,19 +63,7 @@ const Output = (props) => {
                         />
                     }
                     label="Output"
-
                 />
-
-                { /* Button */}
-                {visible &&
-                    <Button
-                        endIcon={<OpenInNewIcon />}
-                        sx={{ float: 'right' }}
-                        href='https://serial.huhn.me/'
-                    >
-                        Terminal
-                    </Button>
-                }
             </>
 
             { /* Actual Output */}

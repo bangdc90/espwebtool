@@ -33,8 +33,9 @@ const PreBuiltFirmware = (props) => {
     const loadManifest = async () => {
         try {
             const timestamp = new Date().getTime()
-            // Try relative path first (for development)
-            const manifestUrl = `./firmware/manifest.json?t=${timestamp}`
+            // Try process.env.PUBLIC_URL for development and production
+            const baseUrl = process.env.PUBLIC_URL || ''
+            const manifestUrl = `${baseUrl}/firmware/manifest.json?t=${timestamp}`
             
             const response = await fetch(manifestUrl, {
                 cache: 'no-cache',
@@ -61,29 +62,34 @@ const PreBuiltFirmware = (props) => {
             console.error('Error loading manifest:', error)
             setManifestLoaded(false)
             
-            // Try absolute path (for production)
-            try {
-                const timestamp = new Date().getTime()
-                const altUrl = `/firmware/manifest.json?t=${timestamp}`
-                
-                const response = await fetch(altUrl, {
-                    cache: 'no-cache',
-                    headers: {
-                        'Cache-Control': 'no-cache'
+            // Try alternative paths
+            const paths = ['./firmware/manifest.json', '/firmware/manifest.json']
+            
+            for (const path of paths) {
+                try {
+                    const timestamp = new Date().getTime()
+                    const altUrl = `${path}?t=${timestamp}`
+                    
+                    const response = await fetch(altUrl, {
+                        cache: 'no-cache',
+                        headers: {
+                            'Cache-Control': 'no-cache'
+                        }
+                    })
+                    
+                    if (response.ok) {
+                        const manifest = await response.json()
+                        setFirmwareList(manifest.builds || [])
+                        setManifestName(manifest.name || 'Firmware Collection')
+                        setManifestLoaded(true)
+                        if (manifest.builds && manifest.builds.length > 0) {
+                            setSelectedFirmware(manifest.builds[0])
+                        }
+                        return
                     }
-                })
-                
-                if (response.ok) {
-                    const manifest = await response.json()
-                    setFirmwareList(manifest.builds || [])
-                    setManifestName(manifest.name || 'Firmware Collection')
-                    setManifestLoaded(true)
-                    if (manifest.builds && manifest.builds.length > 0) {
-                        setSelectedFirmware(manifest.builds[0])
-                    }
+                } catch (altError) {
+                    console.error(`Failed to load from ${path}:`, altError)
                 }
-            } catch (altError) {
-                console.error('Alternative path also failed:', altError)
             }
         }
     }
@@ -94,32 +100,13 @@ const PreBuiltFirmware = (props) => {
         setLoadingStatus('loading')
         
         try {
-            // Try relative path first (for development)
-            const firmwarePath = `./firmware/${firmware.path}`
+            // Try process.env.PUBLIC_URL for development and production
+            const baseUrl = process.env.PUBLIC_URL || ''
+            const firmwarePath = `${baseUrl}/firmware/${firmware.path}`
             const response = await fetch(firmwarePath)
             
             if (!response.ok) {
-                // Try absolute path (for production)
-                const altPath = `/firmware/${firmware.path}`
-                const altResponse = await fetch(altPath)
-                
-                if (!altResponse.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`)
-                }
-                
-                const blob = await altResponse.blob()
-                setFirmwareBlob(blob)
-                setLoadingStatus('loaded')
-                
-                const firmwareFile = {
-                    fileName: firmware.path,
-                    offset: firmware.address,
-                    obj: blob,
-                    firmwareInfo: firmware
-                }
-                
-                props.setUploads([firmwareFile])
-                return
+                throw new Error(`HTTP error! status: ${response.status}`)
             }
             
             const blob = await response.blob()
@@ -137,6 +124,34 @@ const PreBuiltFirmware = (props) => {
             
         } catch (error) {
             console.error('Error loading firmware:', error)
+            
+            // Try alternative paths
+            const paths = [`./firmware/${firmware.path}`, `/firmware/${firmware.path}`]
+            
+            for (const path of paths) {
+                try {
+                    const altResponse = await fetch(path)
+                    
+                    if (altResponse.ok) {
+                        const blob = await altResponse.blob()
+                        setFirmwareBlob(blob)
+                        setLoadingStatus('loaded')
+                        
+                        const firmwareFile = {
+                            fileName: firmware.path,
+                            offset: firmware.address,
+                            obj: blob,
+                            firmwareInfo: firmware
+                        }
+                        
+                        props.setUploads([firmwareFile])
+                        return
+                    }
+                } catch (altError) {
+                    console.error(`Failed to load from ${path}:`, altError)
+                }
+            }
+            
             setLoadingStatus('error')
             props.setUploads([])
         }
@@ -236,7 +251,17 @@ const PreBuiltFirmware = (props) => {
                                     </Typography>
                                 </Box>
                                 
-                                <Typography variant="body2" color="text.secondary" mb={1} sx={{ whiteSpace: 'pre-line' }}>
+                                <Typography 
+                                    variant="body2" 
+                                    color="text.secondary" 
+                                    mb={1} 
+                                    sx={{ 
+                                        whiteSpace: 'pre-line',
+                                        wordBreak: 'break-word',
+                                        overflowWrap: 'break-word',
+                                        textAlign: 'left'
+                                    }}
+                                >
                                     {firmware.description}
                                 </Typography>
                                 
@@ -276,7 +301,16 @@ const PreBuiltFirmware = (props) => {
                             Address: {formatAddress(selectedFirmware.address)} | File: {selectedFirmware.path}
                         </Typography>
                         
-                        <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+                        <Typography 
+                            variant="body2" 
+                            color="text.secondary" 
+                            sx={{ 
+                                whiteSpace: 'pre-line',
+                                wordBreak: 'break-word',
+                                overflowWrap: 'break-word',
+                                textAlign: 'left'
+                            }}
+                        >
                             {selectedFirmware.description}
                         </Typography>
                     </CardContent>
