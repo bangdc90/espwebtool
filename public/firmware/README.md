@@ -14,9 +14,9 @@ This directory contains pre-built firmware files for ESP32/ESP8266 devices and a
   "builds": [
     {
       "chipFamily": "ESP32",
-      "version": "1.0.0",
+      "description": "Firmware description with features",
       "path": "firmware-file.bin",
-      "address": 65536
+      "address": "10000"
     }
   ]
 }
@@ -26,7 +26,7 @@ This directory contains pre-built firmware files for ESP32/ESP8266 devices and a
 - `name`: Display name for the firmware collection
 - `builds`: Array of available firmware builds
 - `chipFamily`: Target chip family (ESP32, ESP8266, ESP32C3, ESP32S2, ESP32S3, etc.)
-- `version`: Firmware version
+- `description`: Detailed description of firmware features and functionality
 - `path`: Path to the binary file (relative to firmware directory)
 - `address`: Flash address in hex string format (e.g., "10000" for 0x10000)
 

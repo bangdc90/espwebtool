@@ -17,8 +17,6 @@ const sleep = (ms) => {
 }
 
 const defaultFiles = (chipName) => {
-    //console.log(chipName)
-
     if (chipName.includes('ESP32')) {
         return [
             { offset: '1000' },
@@ -41,7 +39,6 @@ const loadFiles = async (chipName) => {
     const value = await localforage.getItem('uploads')
 
     if (value) {
-        //console.log(value)
         return value
     }
 

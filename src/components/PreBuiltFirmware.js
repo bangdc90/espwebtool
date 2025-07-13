@@ -14,7 +14,6 @@ import ErrorIcon from '@mui/icons-material/Error'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
-import Chip from '@mui/material/Chip'
 import Alert from '@mui/material/Alert'
 
 import styles from './FileList.module.css'
@@ -33,10 +32,9 @@ const PreBuiltFirmware = (props) => {
 
     const loadManifest = async () => {
         try {
-            // Add cache busting parameter
             const timestamp = new Date().getTime()
-            const manifestUrl = `/firmware/manifest.json?t=${timestamp}`
-            console.log('Loading manifest from:', manifestUrl)
+            // Try relative path first (for development)
+            const manifestUrl = `./firmware/manifest.json?t=${timestamp}`
             
             const response = await fetch(manifestUrl, {
                 cache: 'no-cache',
@@ -44,14 +42,12 @@ const PreBuiltFirmware = (props) => {
                     'Cache-Control': 'no-cache'
                 }
             })
-            console.log('Manifest response status:', response.status)
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
             
             const manifest = await response.json()
-            console.log('Manifest loaded:', manifest)
             
             setFirmwareList(manifest.builds || [])
             setManifestName(manifest.name || 'Firmware Collection')
@@ -65,11 +61,10 @@ const PreBuiltFirmware = (props) => {
             console.error('Error loading manifest:', error)
             setManifestLoaded(false)
             
-            // Try alternative path
+            // Try absolute path (for production)
             try {
                 const timestamp = new Date().getTime()
-                const altUrl = `./firmware/manifest.json?t=${timestamp}`
-                console.log('Trying alternative path:', altUrl)
+                const altUrl = `/firmware/manifest.json?t=${timestamp}`
                 
                 const response = await fetch(altUrl, {
                     cache: 'no-cache',
@@ -80,7 +75,6 @@ const PreBuiltFirmware = (props) => {
                 
                 if (response.ok) {
                     const manifest = await response.json()
-                    console.log('Alternative manifest loaded:', manifest)
                     setFirmwareList(manifest.builds || [])
                     setManifestName(manifest.name || 'Firmware Collection')
                     setManifestLoaded(true)
@@ -100,16 +94,13 @@ const PreBuiltFirmware = (props) => {
         setLoadingStatus('loading')
         
         try {
-            const firmwarePath = `/firmware/${firmware.path}`
-            console.log('Loading firmware from:', firmwarePath)
-            
+            // Try relative path first (for development)
+            const firmwarePath = `./firmware/${firmware.path}`
             const response = await fetch(firmwarePath)
-            console.log('Firmware response status:', response.status)
             
             if (!response.ok) {
-                // Try alternative path
-                const altPath = `./firmware/${firmware.path}`
-                console.log('Trying alternative firmware path:', altPath)
+                // Try absolute path (for production)
+                const altPath = `/firmware/${firmware.path}`
                 const altResponse = await fetch(altPath)
                 
                 if (!altResponse.ok) {
@@ -122,7 +113,7 @@ const PreBuiltFirmware = (props) => {
                 
                 const firmwareFile = {
                     fileName: firmware.path,
-                    offset: firmware.address, // Keep as string hex format
+                    offset: firmware.address,
                     obj: blob,
                     firmwareInfo: firmware
                 }
@@ -135,20 +126,12 @@ const PreBuiltFirmware = (props) => {
             setFirmwareBlob(blob)
             setLoadingStatus('loaded')
             
-            // Update parent component with firmware data
             const firmwareFile = {
                 fileName: firmware.path,
-                offset: firmware.address, // Keep as string hex format like defaultFiles
+                offset: firmware.address,
                 obj: blob,
                 firmwareInfo: firmware
             }
-            
-            console.log('Firmware file prepared for upload:', {
-                fileName: firmwareFile.fileName,
-                offset: firmwareFile.offset,
-                size: blob.size,
-                type: typeof firmwareFile.offset
-            })
             
             props.setUploads([firmwareFile])
             
@@ -192,23 +175,6 @@ const PreBuiltFirmware = (props) => {
         }
     }
 
-    const getChipColor = (chipFamily) => {
-        switch (chipFamily) {
-            case 'ESP32':
-                return 'primary'
-            case 'ESP8266':
-                return 'secondary'
-            case 'ESP32C3':
-                return 'success'
-            case 'ESP32S2':
-                return 'warning'
-            case 'ESP32S3':
-                return 'info'
-            default:
-                return 'default'
-        }
-    }
-
     const formatAddress = (address) => {
         // If address is string (hex), add 0x prefix
         if (typeof address === 'string') {
@@ -243,22 +209,13 @@ const PreBuiltFirmware = (props) => {
             <Typography variant="h6" component="h2" gutterBottom>
                 {manifestName}
             </Typography>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="body2" color="text.secondary">
-                    Select firmware to flash
-                </Typography>
-                <Button 
-                    size="small" 
-                    onClick={loadManifest}
-                    variant="outlined"
-                >
-                    Reload Manifest
-                </Button>
-            </Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+                Select firmware to flash
+            </Typography>
             
             <Grid container spacing={2}>
                 {firmwareList.map((firmware, index) => (
-                    <Grid item xs={12} md={6} key={`${firmware.chipFamily}-${firmware.version}-${index}`}>
+                    <Grid item xs={12} md={6} key={`${firmware.title || firmware.chipFamily}-${index}`}>
                         <Card 
                             variant="outlined" 
                             sx={{ 
@@ -274,23 +231,14 @@ const PreBuiltFirmware = (props) => {
                                         <RadioButtonCheckedIcon color="primary" /> : 
                                         <RadioButtonUncheckedIcon />
                                     }
-                                    <Typography variant="h6" component="h3">
-                                        {firmware.chipFamily} v{firmware.version}
+                                    <Typography variant="h6" component="h3" fontWeight="bold">
+                                        {firmware.title}
                                     </Typography>
                                 </Box>
                                 
-                                <Box display="flex" gap={1} mb={1}>
-                                    <Chip 
-                                        label={firmware.chipFamily} 
-                                        color={getChipColor(firmware.chipFamily)}
-                                        size="small"
-                                    />
-                                    <Chip 
-                                        label={`v${firmware.version}`} 
-                                        variant="outlined"
-                                        size="small"
-                                    />
-                                </Box>
+                                <Typography variant="body2" color="text.secondary" mb={1} sx={{ whiteSpace: 'pre-line' }}>
+                                    {firmware.description}
+                                </Typography>
                                 
                                 <Grid container spacing={1}>
                                     <Grid item xs={6}>
@@ -313,8 +261,8 @@ const PreBuiltFirmware = (props) => {
             {selectedFirmware && (
                 <Card variant="outlined" sx={{ mt: 2, maxWidth: 600, margin: '16px auto' }}>
                     <CardContent>
-                        <Typography variant="h6" component="h2" gutterBottom>
-                            Selected: {selectedFirmware.chipFamily} v{selectedFirmware.version}
+                        <Typography variant="h6" component="h2" gutterBottom fontWeight="bold">
+                            {selectedFirmware.title}
                         </Typography>
                         
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -328,8 +276,8 @@ const PreBuiltFirmware = (props) => {
                             Address: {formatAddress(selectedFirmware.address)} | File: {selectedFirmware.path}
                         </Typography>
                         
-                        <Typography variant="body2" color="text.secondary">
-                            Firmware for {selectedFirmware.chipFamily} chip family
+                        <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+                            {selectedFirmware.description}
                         </Typography>
                     </CardContent>
                     
