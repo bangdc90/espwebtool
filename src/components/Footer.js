@@ -10,15 +10,6 @@ import version from '../version.js'
 const Footer = (props) => {
     return (
         <Box sx={props.sx}>
-            { /* Made in Germany :D */}
-            <Box sx={{ mx: 'auto', mt: 0 }}>
-                <Typography
-                align='center'
-                display='block'>
-                Made with ❤️ by <Link href='https://spacehuhn.com' target='_blank' underline='hover' color='inherit'>Spacehuhn</Link>
-                </Typography>
-            </Box>
-
             { /* Version */}
             <Typography
                 variant='caption'
