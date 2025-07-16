@@ -11,7 +11,7 @@
 	{
       "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
       "chipFamily": "ESP32C3",
-      "description": "FW cho mochi V1 với các chức năng:\n-Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
+      "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
       "path": "mochi_v1_reverted_color.bin",
       "address": "10000"
     }
