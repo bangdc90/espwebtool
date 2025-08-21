@@ -2,6 +2,13 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Mochi V2",
+      "chipFamily": "ESP32C3",
+      "description": "Mochi V2 với 20 biểu cảm\n- Màn hình 240x240\n- Cảm biến gia tốc MPU6050\n- Esp32-C3",
+      "path": "fw_mochi_v2.bin",
+      "address": "10000"
+    },
+    {
       "title": "Dasai Mochi V1 với cảm biến chạm",
       "chipFamily": "ESP32C3",
       "description": "FW cho mochi V1 với các chức năng:\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
