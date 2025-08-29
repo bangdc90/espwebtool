@@ -139,11 +139,17 @@ const App = () => {
       })
     }
 
-    for (const file of uploads) {
+    for (let i = 0; i < uploads.length; i++) {
+      const file = uploads[i]
       if (!file.fileName || !file.obj) continue
       success = true
 
-      toast(`Uploading ${file.fileName.substring(0, 28)}...`, { position: 'top-center', progress: 0, toastId: 'upload' })
+      const fileNumber = i + 1
+      const totalFiles = uploads.length
+      const fileDesc = file.firmwareInfo?.title || file.fileName
+      
+      addOutput(`Step ${fileNumber}/${totalFiles}: Uploading ${fileDesc} to address 0x${file.offset}`)
+      toast(`Uploading ${fileDesc}...`, { position: 'top-center', progress: 0, toastId: `upload-${i}` })
 
       try {
         const contents = await toArrayBuffer(file.obj)
@@ -154,30 +160,31 @@ const App = () => {
             const progress = (bytesWritten / totalBytes)
             const percentage = Math.floor(progress * 100)
 
-            toast.update('upload', { progress: progress })
+            toast.update(`upload-${i}`, { progress: progress })
 
-            addOutput(`Flashing... ${percentage}%`)
+            addOutput(`Flashing ${fileDesc}... ${percentage}%`)
           },
           parseInt(file.offset, 16)
         )
 
+        addOutput(`Completed flashing ${fileDesc}`)
         await sleep(100)
       } catch (e) {
-        addOutput(`ERROR!`)
+        addOutput(`ERROR flashing ${fileDesc}!`)
         addOutput(`${e}`)
         console.error(e)
       }
     }
 
     if (success) {
-      addOutput(`Done!`)
+      addOutput(`All files flashed successfully!`)
       addOutput(`To run the new firmware please reset your device.`)
 
       toast.success('Done! Reset ESP to run new firmware.', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
     } else {
-      addOutput(`Please add a .bin file`)
+      addOutput(`Please add firmware files`)
 
-      toast.info('Please add a .bin file', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
+      toast.info('Please add firmware files', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
     }
 
     setFlashing(false)

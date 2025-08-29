@@ -103,53 +103,115 @@ const PreBuiltFirmware = (props) => {
             // Try process.env.PUBLIC_URL for development and production
             const baseUrl = process.env.PUBLIC_URL || ''
             const firmwarePath = `${baseUrl}/firmware/${firmware.path}`
-            const response = await fetch(firmwarePath)
+            const partitionsPath = `${baseUrl}/firmware/partitions.bin`
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
+            // Fetch firmware file
+            const firmwareResponse = await fetch(firmwarePath)
+            if (!firmwareResponse.ok) {
+                throw new Error(`HTTP error! status: ${firmwareResponse.status}`)
             }
+            const firmwareBlob = await firmwareResponse.blob()
             
-            const blob = await response.blob()
-            setFirmwareBlob(blob)
+            // Fetch partitions file
+            const partitionsResponse = await fetch(partitionsPath)
+            if (!partitionsResponse.ok) {
+                throw new Error(`HTTP error! status: ${partitionsResponse.status}`)
+            }
+            const partitionsBlob = await partitionsResponse.blob()
+            
+            setFirmwareBlob(firmwareBlob)
             setLoadingStatus('loaded')
+            
+            // Create file entries for both partitions and firmware
+            const partitionsFile = {
+                fileName: 'partitions.bin',
+                offset: '8000', // Flash partition table at 0x8000
+                obj: partitionsBlob,
+                firmwareInfo: { title: 'Partition Table' }
+            }
             
             const firmwareFile = {
                 fileName: firmware.path,
                 offset: firmware.address,
-                obj: blob,
+                obj: firmwareBlob,
                 firmwareInfo: firmware
             }
             
-            props.setUploads([firmwareFile])
+            // Set both files to be uploaded in the correct order
+            props.setUploads([partitionsFile, firmwareFile])
             
         } catch (error) {
             console.error('Error loading firmware:', error)
             
             // Try alternative paths
-            const paths = [`./firmware/${firmware.path}`, `/firmware/${firmware.path}`]
-            
-            for (const path of paths) {
-                try {
-                    const altResponse = await fetch(path)
-                    
-                    if (altResponse.ok) {
-                        const blob = await altResponse.blob()
-                        setFirmwareBlob(blob)
-                        setLoadingStatus('loaded')
-                        
-                        const firmwareFile = {
-                            fileName: firmware.path,
-                            offset: firmware.address,
-                            obj: blob,
-                            firmwareInfo: firmware
+            try {
+                const uploads = []
+                let firmwareBlob = null
+                
+                // Try to load partitions.bin
+                const partitionsPaths = [`./firmware/partitions.bin`, `/firmware/partitions.bin`]
+                let partitionsLoaded = false
+                
+                for (const path of partitionsPaths) {
+                    try {
+                        const partitionsResponse = await fetch(path)
+                        if (partitionsResponse.ok) {
+                            const partitionsBlob = await partitionsResponse.blob()
+                            uploads.push({
+                                fileName: 'partitions.bin',
+                                offset: '8000', // Flash partition table at 0x8000
+                                obj: partitionsBlob,
+                                firmwareInfo: { title: 'Partition Table' }
+                            })
+                            partitionsLoaded = true
+                            break
                         }
-                        
-                        props.setUploads([firmwareFile])
-                        return
+                    } catch (partitionsError) {
+                        console.error(`Failed to load partitions from ${path}:`, partitionsError)
                     }
-                } catch (altError) {
-                    console.error(`Failed to load from ${path}:`, altError)
                 }
+                
+                if (!partitionsLoaded) {
+                    throw new Error('Failed to load partitions.bin')
+                }
+                
+                // Try to load firmware
+                const firmwarePaths = [`./firmware/${firmware.path}`, `/firmware/${firmware.path}`]
+                let firmwareLoaded = false
+                
+                for (const path of firmwarePaths) {
+                    try {
+                        const firmwareResponse = await fetch(path)
+                        if (firmwareResponse.ok) {
+                            firmwareBlob = await firmwareResponse.blob()
+                            uploads.push({
+                                fileName: firmware.path,
+                                offset: firmware.address,
+                                obj: firmwareBlob,
+                                firmwareInfo: firmware
+                            })
+                            firmwareLoaded = true
+                            setFirmwareBlob(firmwareBlob)
+                            break
+                        }
+                    } catch (firmwareError) {
+                        console.error(`Failed to load firmware from ${path}:`, firmwareError)
+                    }
+                }
+                
+                if (!firmwareLoaded) {
+                    throw new Error(`Failed to load firmware ${firmware.path}`)
+                }
+                
+                // If both files loaded successfully
+                if (uploads.length === 2) {
+                    setLoadingStatus('loaded')
+                    props.setUploads(uploads)
+                    return
+                }
+                
+            } catch (altError) {
+                console.error('Error in alternative loading paths:', altError)
             }
             
             setLoadingStatus('error')
@@ -182,7 +244,7 @@ const PreBuiltFirmware = (props) => {
             case 'loading':
                 return 'Loading firmware...'
             case 'loaded':
-                return `Firmware loaded (${(firmwareBlob?.size || 0)} bytes)`
+                return `Firmware loaded (${(firmwareBlob?.size || 0)} bytes) + partition table`
             case 'error':
                 return 'Error loading firmware'
             default:
