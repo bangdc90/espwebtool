@@ -2,6 +2,13 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Trạm hàn Chuột (MOUSE Soldering Station)",
+      "chipFamily": "ESP32C3",
+      "description": "Trạm hàn chuột siêu cấp VIP PRO",
+      "path": "solder_station_c3.bin",
+      "address": "10000"
+    },
+    {
       "title": "Chỉ đường Google Maps (Navigation)",
       "chipFamily": "ESP32C3",
       "description": "Navigation with google maps\n- Màn hình 240x240\n- Esp32-C3\n- App Chronos trên android (Tải trên CHPlay)",
