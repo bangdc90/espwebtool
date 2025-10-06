@@ -2,7 +2,16 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Chatbot AI full Tiếng Việt",
+      "youtube": "https://youtu.be/8bkfMLDgnlE",
+      "chipFamily": "ESP32S3",
+      "description": "Full tiếng việt, Hi Lily để đánh thức",
+      "path": "lily_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Trạm hàn Chuột (MOUSE Soldering Station)",
+      "youtube": "https://youtu.be/S8o4g12h2Ko",
       "chipFamily": "ESP32C3",
       "description": "Trạm hàn chuột siêu cấp VIP PRO",
       "path": "solder_station_c3.bin",
@@ -10,6 +19,7 @@
     },
     {
       "title": "Chỉ đường Google Maps (Navigation)",
+      "youtube": "https://youtu.be/1y93Rbef1E8",
       "chipFamily": "ESP32C3",
       "description": "Navigation with google maps\n- Màn hình 240x240\n- Esp32-C3\n- App Chronos trên android (Tải trên CHPlay)",
       "path": "navigation_c3.bin",
@@ -17,6 +27,7 @@
     },
     {
       "title": "Mochi V2",
+      "youtube": "https://youtu.be/vsYloV9RQ_I",
       "chipFamily": "ESP32C3",
       "description": "Mochi V2 với 20 biểu cảm\n- Màn hình 240x240\n- Cảm biến gia tốc MPU6050\n- Esp32-C3",
       "path": "fw_mochi_v2.bin",
@@ -24,6 +35,7 @@
     },
     {
       "title": "Dasai Mochi V1 với cảm biến chạm",
+      "youtube": "https://youtu.be/XIy89oY_8sA",
       "chipFamily": "ESP32C3",
       "description": "FW cho mochi V1 với các chức năng:\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
       "path": "mochi_v1.bin",
@@ -31,6 +43,7 @@
     },
 	{
       "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
+      "youtube": "https://youtu.be/XIy89oY_8sA",
       "chipFamily": "ESP32C3",
       "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
       "path": "mochi_v1_reverted_color.bin",
@@ -41,13 +54,6 @@
       "chipFamily": "ESP32C3",
       "description": "Chơi video Hốc Trưởng:\n- Link Hướng dẫn: tiktok Mrvocsi\n- Màn hình TFT 1.77 inch 160x128\n- Esp32-C3\n- Nút cảm ứng",
       "path": "fw_hoc_truong.bin",
-      "address": "10000"
-    },
-	{
-      "title": "Test LCD 0.96 inch",
-      "chipFamily": "ESP32C3",
-      "description": "Test hoạt động của màn hình 0.96 IPS:\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n",
-      "path": "test_096inch.bin",
       "address": "10000"
     }
   ]

@@ -15,6 +15,8 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import Alert from '@mui/material/Alert'
+import Link from '@mui/material/Link'
+import YouTubeIcon from '@mui/icons-material/YouTube'
 
 import styles from './FileList.module.css'
 
@@ -104,24 +106,41 @@ const PreBuiltFirmware = (props) => {
             const baseUrl = process.env.PUBLIC_URL || ''
             const firmwarePath = `${baseUrl}/firmware/${firmware.path}`
             const partitionsPath = `${baseUrl}/firmware/partitions.bin`
-            
+
             // Fetch firmware file
             const firmwareResponse = await fetch(firmwarePath)
             if (!firmwareResponse.ok) {
                 throw new Error(`HTTP error! status: ${firmwareResponse.status}`)
             }
             const firmwareBlob = await firmwareResponse.blob()
-            
-            // Fetch partitions file
+
+            setFirmwareBlob(firmwareBlob)
+
+            // If firmware.address is 0 (number) or '0' (string), only load firmware
+            const addressIsZero = firmware.address === 0 || firmware.address === '0' || firmware.address === '0x0' || firmware.address === 0x0
+
+            if (addressIsZero) {
+                const firmwareFileOnly = {
+                    fileName: firmware.path,
+                    offset: firmware.address,
+                    obj: firmwareBlob,
+                    firmwareInfo: firmware
+                }
+
+                setLoadingStatus('loaded')
+                props.setUploads([firmwareFileOnly])
+                return
+            }
+
+            // Otherwise fetch partitions and queue both files
             const partitionsResponse = await fetch(partitionsPath)
             if (!partitionsResponse.ok) {
                 throw new Error(`HTTP error! status: ${partitionsResponse.status}`)
             }
             const partitionsBlob = await partitionsResponse.blob()
-            
-            setFirmwareBlob(firmwareBlob)
+
             setLoadingStatus('loaded')
-            
+
             // Create file entries for both partitions and firmware
             const partitionsFile = {
                 fileName: 'partitions.bin',
@@ -129,17 +148,17 @@ const PreBuiltFirmware = (props) => {
                 obj: partitionsBlob,
                 firmwareInfo: { title: 'Partition Table' }
             }
-            
+
             const firmwareFile = {
                 fileName: firmware.path,
                 offset: firmware.address,
                 obj: firmwareBlob,
                 firmwareInfo: firmware
             }
-            
+
             // Set both files to be uploaded in the correct order
             props.setUploads([partitionsFile, firmwareFile])
-            
+
         } catch (error) {
             console.error('Error loading firmware:', error)
             
@@ -147,11 +166,48 @@ const PreBuiltFirmware = (props) => {
             try {
                 const uploads = []
                 let firmwareBlob = null
-                
-                // Try to load partitions.bin
+
+                // Determine if we should skip partitions based on address
+                const addressIsZero = firmware.address === 0 || firmware.address === '0' || firmware.address === '0x0' || firmware.address === 0x0
+
+                // If address is zero, only try to load firmware
+                if (addressIsZero) {
+                    const firmwarePaths = [`./firmware/${firmware.path}`, `/firmware/${firmware.path}`]
+                    let firmwareLoaded = false
+
+                    for (const path of firmwarePaths) {
+                        try {
+                            const firmwareResponse = await fetch(path)
+                            if (firmwareResponse.ok) {
+                                firmwareBlob = await firmwareResponse.blob()
+                                uploads.push({
+                                    fileName: firmware.path,
+                                    offset: firmware.address,
+                                    obj: firmwareBlob,
+                                    firmwareInfo: firmware
+                                })
+                                firmwareLoaded = true
+                                setFirmwareBlob(firmwareBlob)
+                                break
+                            }
+                        } catch (firmwareError) {
+                            console.error(`Failed to load firmware from ${path}:`, firmwareError)
+                        }
+                    }
+
+                    if (!firmwareLoaded) {
+                        throw new Error(`Failed to load firmware ${firmware.path}`)
+                    }
+
+                    setLoadingStatus('loaded')
+                    props.setUploads(uploads)
+                    return
+                }
+
+                // Otherwise try to load partitions first
                 const partitionsPaths = [`./firmware/partitions.bin`, `/firmware/partitions.bin`]
                 let partitionsLoaded = false
-                
+
                 for (const path of partitionsPaths) {
                     try {
                         const partitionsResponse = await fetch(path)
@@ -170,15 +226,15 @@ const PreBuiltFirmware = (props) => {
                         console.error(`Failed to load partitions from ${path}:`, partitionsError)
                     }
                 }
-                
+
                 if (!partitionsLoaded) {
                     throw new Error('Failed to load partitions.bin')
                 }
-                
+
                 // Try to load firmware
                 const firmwarePaths = [`./firmware/${firmware.path}`, `/firmware/${firmware.path}`]
                 let firmwareLoaded = false
-                
+
                 for (const path of firmwarePaths) {
                     try {
                         const firmwareResponse = await fetch(path)
@@ -198,11 +254,11 @@ const PreBuiltFirmware = (props) => {
                         console.error(`Failed to load firmware from ${path}:`, firmwareError)
                     }
                 }
-                
+
                 if (!firmwareLoaded) {
                     throw new Error(`Failed to load firmware ${firmware.path}`)
                 }
-                
+
                 // If both files loaded successfully
                 if (uploads.length === 2) {
                     setLoadingStatus('loaded')
@@ -326,6 +382,14 @@ const PreBuiltFirmware = (props) => {
                                 >
                                     {firmware.description}
                                 </Typography>
+                                {firmware.youtube && (
+                                    <Box mt={1}>
+                                        <Link href={firmware.youtube} target="_blank" rel="noopener noreferrer" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                                            <YouTubeIcon color="error" />
+                                            <span>Watch on YouTube</span>
+                                        </Link>
+                                    </Box>
+                                )}
                                 
                                 <Grid container spacing={1}>
                                     <Grid item xs={6}>
@@ -375,6 +439,14 @@ const PreBuiltFirmware = (props) => {
                         >
                             {selectedFirmware.description}
                         </Typography>
+                        {selectedFirmware.youtube && (
+                            <Box mt={1}>
+                                <Link href={selectedFirmware.youtube} target="_blank" rel="noopener noreferrer" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                                    <YouTubeIcon color="error" />
+                                    <span>Watch on YouTube</span>
+                                </Link>
+                            </Box>
+                        )}
                     </CardContent>
                     
                     <CardActions>
