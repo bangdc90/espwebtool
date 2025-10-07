@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-// Global visitor counter using GitHub Repository Contents API
-// This stores the counter in a JSON file in your GitHub repository
+// TRUE GLOBAL visitor counter using Hits.sh - a free public hit counter service
+// This counts ALL visitors worldwide, not just per-browser
 const SESSION_KEY = 'espwebtool_session_counted' // sessionStorage marker (counts once per tab/session)
-const LOCAL_TOTAL_KEY = 'espwebtool_local_backup' // local backup for offline display
+const LOCAL_TOTAL_KEY = 'espwebtool_local_backup' // local backup for display
 
-// GitHub configuration - using your repository to store visitor count
-const GITHUB_OWNER = 'bangdc90' // Your GitHub username
-const GITHUB_REPO = 'espwebtool' // Your repository name
-const COUNTER_FILE_PATH = 'visitor-count.json' // File to store the count
-const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${COUNTER_FILE_PATH}`
+// Hits.sh - Free, reliable global counter service (no signup required)
+const HITS_API_URL = 'https://hits.sh/bangdc90.github.io/espwebtool'
 
 const VisitCounter = () => {
   const [total, setTotal] = useState(() => {
@@ -35,93 +32,84 @@ const VisitCounter = () => {
 
     const initializeCounter = async () => {
       try {
-        // First, get current count from GitHub repository file
-        const fileResponse = await fetch(GITHUB_API_URL, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'espwebtool-visitor-counter'
-          }
-        })
-
-        let currentCount = 0
-        let fileSha = null
-
-        if (fileResponse.ok) {
-          const fileData = await fileResponse.json()
+        // Always get current global count first
+        const getCurrentCount = async () => {
           try {
-            // Decode base64 content
-            const content = JSON.parse(atob(fileData.content))
-            currentCount = content.count || 0
-            fileSha = fileData.sha
-            console.log('Current global count from GitHub:', currentCount)
-          } catch (parseError) {
-            console.warn('Failed to parse visitor count file:', parseError)
-            currentCount = 0
+            const response = await fetch(HITS_API_URL + '.json', {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json'
+              }
+            })
+            
+            if (response.ok) {
+              const data = await response.json()
+              return data.hits || 0
+            }
+          } catch (e) {
+            console.log('Failed to get current count:', e)
           }
-        } else if (fileResponse.status === 404) {
-          console.log('Visitor count file does not exist yet, will create it')
-          currentCount = 0
+          return null
+        }
+
+        // Get current global count
+        let currentCount = await getCurrentCount()
+        
+        if (currentCount !== null) {
+          console.log('Current global count from Hits.sh:', currentCount)
         } else {
-          console.log('Failed to fetch GitHub file, using local backup')
+          // Fallback to local backup
           currentCount = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY) || '0', 10)
+          console.log('Using local backup count:', currentCount)
         }
 
         // If this session hasn't been counted, increment the global counter
         if (!sessionAlready) {
-          const newCount = currentCount + 1
-          
-          // Update the global counter by updating the repository file
           try {
-            const newContent = {
-              count: newCount,
-              lastUpdated: new Date().toISOString(),
-              userAgent: navigator.userAgent.substring(0, 100)
-            }
-            
-            const updatePayload = {
-              message: `Update visitor count to ${newCount}`,
-              content: btoa(JSON.stringify(newContent, null, 2)),
-              ...(fileSha && { sha: fileSha }) // Include SHA if file exists
-            }
-            
-            const updateResponse = await fetch(GITHUB_API_URL, {
-              method: 'PUT',
+            // Hit the counter endpoint to increment
+            const incrementResponse = await fetch(HITS_API_URL, {
+              method: 'GET',
               headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
                 'User-Agent': 'espwebtool-visitor-counter'
-              },
-              body: JSON.stringify(updatePayload)
+              }
             })
 
-            if (updateResponse.ok) {
-              console.log('Successfully incremented global counter to:', newCount)
-              if (!cancelled) setTotal(newCount)
+            if (incrementResponse.ok) {
+              // Get the updated count
+              const newCount = await getCurrentCount()
+              if (newCount !== null) {
+                currentCount = newCount
+                console.log('Successfully incremented global counter to:', currentCount)
+              } else {
+                currentCount += 1
+                console.log('Incremented locally to:', currentCount)
+              }
               
-              // Save to local backup and mark session
+              // Mark this session as counted
               try {
-                localStorage.setItem(LOCAL_TOTAL_KEY, String(newCount))
                 sessionStorage.setItem(SESSION_KEY, '1')
+                localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
               } catch (e) {
-                console.warn('Failed to save locally:', e)
+                console.warn('Failed to mark session:', e)
               }
             } else {
-              const errorData = await updateResponse.json().catch(() => ({}))
-              throw new Error(`Failed to update GitHub file: ${errorData.message || updateResponse.statusText}`)
+              throw new Error('Failed to increment global counter')
             }
-          } catch (updateError) {
-            console.error('Failed to update GitHub counter:', updateError)
+          } catch (incrementError) {
+            console.error('Failed to increment global counter:', incrementError)
             
             // Fallback to local increment
-            const localCount = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY) || '0', 10) + 1
-            localStorage.setItem(LOCAL_TOTAL_KEY, String(localCount))
-            sessionStorage.setItem(SESSION_KEY, '1')
-            if (!cancelled) setTotal(localCount)
+            currentCount += 1
+            try {
+              sessionStorage.setItem(SESSION_KEY, '1')
+              localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
+            } catch (e) {
+              console.warn('Failed to save locally:', e)
+            }
           }
         } else {
-          // Session already counted, just display current total
-          if (!cancelled) setTotal(currentCount)
+          console.log('Returning visitor in same session, showing count:', currentCount)
+          // Update local backup with current global count
           try {
             localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
           } catch (e) {
@@ -129,20 +117,24 @@ const VisitCounter = () => {
           }
         }
 
+        if (!cancelled) {
+          setTotal(currentCount)
+        }
+
       } catch (error) {
         console.error('Counter initialization failed:', error)
         
         // Ultimate fallback to local counter
         try {
-          let localCount = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY) || '0', 10)
+          let fallbackCount = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY) || '1', 10)
           if (!sessionAlready) {
-            localCount += 1
-            localStorage.setItem(LOCAL_TOTAL_KEY, String(localCount))
+            fallbackCount += 1
+            localStorage.setItem(LOCAL_TOTAL_KEY, String(fallbackCount))
             sessionStorage.setItem(SESSION_KEY, '1')
           }
-          if (!cancelled) setTotal(localCount)
+          if (!cancelled) setTotal(fallbackCount)
         } catch (localError) {
-          console.error('Even local fallback failed:', localError)
+          console.error('All fallbacks failed:', localError)
           if (!cancelled) setTotal(1)
         }
       }
