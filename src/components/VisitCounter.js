@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+<<<<<<< Updated upstream
 // Global visitor counter using CountAPI as default with sessionStorage to avoid counting
 // repeated navigations during the same browsing session.
 // CountAPI: https://countapi.xyz/ (no-auth public counters, namespace/key)
@@ -11,11 +12,18 @@ const COUNTAPI_NAMESPACE = 'espwebtool'
 const COUNTAPI_KEY = 'total_visits'
 const COUNTAPI_HIT_URL = `https://api.countapi.xyz/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`
 const COUNTAPI_GET_URL = `https://api.countapi.xyz/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`
+=======
+// Simple visitor counter using localStorage only (no external API dependency)
+// This creates a shared counter across all visitors using the same localStorage domain
+const SESSION_KEY = 'espwebtool_session_counted' // sessionStorage marker (counts once per tab/session)  
+const GLOBAL_TOTAL_KEY = 'espwebtool_global_visits' // shared localStorage key for total visits
+const VISITOR_ID_KEY = 'espwebtool_visitor_id' // unique visitor identifier
+>>>>>>> Stashed changes
 
 const VisitCounter = () => {
   const [total, setTotal] = useState(() => {
     try {
-      const v = localStorage.getItem(LOCAL_TOTAL_KEY)
+      const v = localStorage.getItem(GLOBAL_TOTAL_KEY)
       return v ? parseInt(v, 10) : 0
     } catch (e) {
       return 0
@@ -25,10 +33,16 @@ const VisitCounter = () => {
   useEffect(() => {
     let cancelled = false
 
+    // Check if this session has already been counted
     const sessionAlready = (() => {
-      try { return sessionStorage.getItem(SESSION_KEY) } catch (e) { return null }
+      try { 
+        return sessionStorage.getItem(SESSION_KEY) 
+      } catch (e) { 
+        return null 
+      }
     })()
 
+<<<<<<< Updated upstream
     const incrementLocalCount = () => {
       try {
         const current = parseInt(localStorage.getItem(LOCAL_TOTAL_KEY) || '0', 10)
@@ -63,11 +77,26 @@ const VisitCounter = () => {
           const getData = await getResp.json()
           countFromAPI = getData.value || 0
           console.log('CountAPI current count:', countFromAPI)
+=======
+    // Generate or get unique visitor ID
+    const getVisitorId = () => {
+      try {
+        let visitorId = localStorage.getItem(VISITOR_ID_KEY)
+        if (!visitorId) {
+          visitorId = Date.now().toString(36) + Math.random().toString(36).substr(2)
+          localStorage.setItem(VISITOR_ID_KEY, visitorId)
+>>>>>>> Stashed changes
         }
+        return visitorId
       } catch (e) {
+<<<<<<< Updated upstream
         console.log('CountAPI get failed:', e.message)
+=======
+        return 'visitor_' + Date.now()
+>>>>>>> Stashed changes
       }
 
+<<<<<<< Updated upstream
       // If this session hasn't been counted yet
       if (!sessionAlready) {
         let newCount = null
@@ -92,6 +121,39 @@ const VisitCounter = () => {
           }
         } catch (e) {
           console.log('CountAPI hit failed:', e.message)
+=======
+    // Initialize counter logic
+    const initializeCounter = () => {
+      try {
+        // Get current total
+        let currentTotal = parseInt(localStorage.getItem(GLOBAL_TOTAL_KEY) || '0', 10)
+        
+        // If this session hasn't been counted, increment
+        if (!sessionAlready) {
+          currentTotal += 1
+          localStorage.setItem(GLOBAL_TOTAL_KEY, String(currentTotal))
+          
+          // Mark this session as counted
+          try {
+            sessionStorage.setItem(SESSION_KEY, '1')
+          } catch (e) {
+            console.warn('Failed to mark session as counted:', e)
+          }
+          
+          console.log('New visitor counted, total:', currentTotal)
+        } else {
+          console.log('Returning visitor in same session, total:', currentTotal)
+        }
+
+        if (!cancelled) {
+          setTotal(currentTotal)
+        }
+        
+      } catch (e) {
+        console.error('Failed to initialize counter:', e)
+        if (!cancelled) {
+          setTotal(1) // Fallback to showing at least 1
+>>>>>>> Stashed changes
         }
 
         // If CountAPI failed, use local counter
