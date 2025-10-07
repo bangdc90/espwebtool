@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-// TRUE GLOBAL visitor counter using Hits.sh - a free public hit counter service
+// TRUE GLOBAL visitor counter using Hits.sh - bypassing CORS with image pixel tracking
 // This counts ALL visitors worldwide, not just per-browser
 const SESSION_KEY = 'espwebtool_session_counted' // sessionStorage marker (counts once per tab/session)
 const LOCAL_TOTAL_KEY = 'espwebtool_local_backup' // local backup for display
 
-// Hits.sh - Free, reliable global counter service (no signup required)
-const HITS_API_URL = 'https://hits.sh/bangdc90.github.io/espwebtool'
+// Hits.sh configuration - using CORS-free image pixel method
+const HITS_BASE_URL = 'https://hits.sh/bangdc90.github.io/espwebtool'
+const HITS_JSON_URL = 'https://hits.sh/bangdc90.github.io/espwebtool.json'
 
 const VisitCounter = () => {
   const [total, setTotal] = useState(() => {
@@ -32,24 +33,50 @@ const VisitCounter = () => {
 
     const initializeCounter = async () => {
       try {
-        // Always get current global count first
-        const getCurrentCount = async () => {
-          try {
-            const response = await fetch(HITS_API_URL + '.json', {
-              method: 'GET',
-              headers: {
-                'Accept': 'application/json'
-              }
-            })
+        // Function to get current count using JSONP-like approach (bypass CORS)
+        const getCurrentCount = () => {
+          return new Promise((resolve) => {
+            // Create a script tag to bypass CORS (JSONP approach)
+            const script = document.createElement('script')
+            const callbackName = 'hitsCallback_' + Date.now()
             
-            if (response.ok) {
-              const data = await response.json()
-              return data.hits || 0
+            // Set up global callback
+            window[callbackName] = (data) => {
+              resolve(data.hits || 0)
+              document.head.removeChild(script)
+              delete window[callbackName]
             }
-          } catch (e) {
-            console.log('Failed to get current count:', e)
-          }
-          return null
+            
+            // Try JSONP first, fallback to image pixel tracking
+            script.src = `${HITS_JSON_URL}?callback=${callbackName}`
+            script.onerror = () => {
+              // JSONP failed, resolve with null to use fallback
+              resolve(null)
+              document.head.removeChild(script)
+              delete window[callbackName]
+            }
+            
+            document.head.appendChild(script)
+            
+            // Timeout after 5 seconds
+            setTimeout(() => {
+              if (window[callbackName]) {
+                resolve(null)
+                document.head.removeChild(script)
+                delete window[callbackName]
+              }
+            }, 5000)
+          })
+        }
+
+        // Function to increment counter using image pixel (CORS-free)
+        const incrementCounter = () => {
+          return new Promise((resolve) => {
+            const img = new Image()
+            img.onload = () => resolve(true)
+            img.onerror = () => resolve(true) // Even errors mean the request was made
+            img.src = HITS_BASE_URL + '?' + Date.now() // Add timestamp to prevent caching
+          })
         }
 
         // Get current global count
@@ -65,60 +92,51 @@ const VisitCounter = () => {
 
         // If this session hasn't been counted, increment the global counter
         if (!sessionAlready) {
-          try {
-            // Hit the counter endpoint to increment
-            const incrementResponse = await fetch(HITS_API_URL, {
-              method: 'GET',
-              headers: {
-                'User-Agent': 'espwebtool-visitor-counter'
-              }
-            })
-
-            if (incrementResponse.ok) {
-              // Get the updated count
-              const newCount = await getCurrentCount()
-              if (newCount !== null) {
-                currentCount = newCount
-                console.log('Successfully incremented global counter to:', currentCount)
-              } else {
-                currentCount += 1
-                console.log('Incremented locally to:', currentCount)
-              }
-              
-              // Mark this session as counted
-              try {
-                sessionStorage.setItem(SESSION_KEY, '1')
-                localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
-              } catch (e) {
-                console.warn('Failed to mark session:', e)
-              }
+          console.log('New session, incrementing counter...')
+          
+          // Use image pixel to increment counter (bypasses CORS)
+          await incrementCounter()
+          
+          // Wait a moment then get updated count
+          setTimeout(async () => {
+            const newCount = await getCurrentCount()
+            if (newCount !== null && newCount > currentCount) {
+              currentCount = newCount
+              console.log('Successfully incremented global counter to:', currentCount)
             } else {
-              throw new Error('Failed to increment global counter')
+              currentCount += 1
+              console.log('Using local increment to:', currentCount)
             }
-          } catch (incrementError) {
-            console.error('Failed to increment global counter:', incrementError)
             
-            // Fallback to local increment
-            currentCount += 1
+            if (!cancelled) {
+              setTotal(currentCount)
+            }
+            
+            // Save state
             try {
               sessionStorage.setItem(SESSION_KEY, '1')
               localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
             } catch (e) {
-              console.warn('Failed to save locally:', e)
+              console.warn('Failed to save state:', e)
             }
+          }, 1000) // Wait 1 second for hits.sh to update
+          
+          // Show estimated count immediately
+          if (!cancelled) {
+            setTotal(currentCount + 1)
           }
         } else {
           console.log('Returning visitor in same session, showing count:', currentCount)
+          if (!cancelled) {
+            setTotal(currentCount)
+          }
+          
           // Update local backup with current global count
           try {
             localStorage.setItem(LOCAL_TOTAL_KEY, String(currentCount))
           } catch (e) {
             console.warn('Failed to save backup:', e)
           }
-        }
-
-        if (!cancelled) {
-          setTotal(currentCount)
         }
 
       } catch (error) {
