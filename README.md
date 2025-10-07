@@ -114,3 +114,19 @@ npm run deploy
 ## License 
 
 This software is licensed under the MIT License. See the [license file](LICENSE) for details.  
+
+## Visitor counter
+
+This project includes a simple, local visitor counter shown in the top-right of the header. By default it uses `localStorage` and counts unique browsers (per device+browser). This is a lightweight client-side approach and does not represent a global site-wide metric.
+
+If you want a global counter shared across all visitors, this project ships with a client-side integration to CountAPI (https://countapi.xyz/) which provides simple public counters without a backend.
+
+How it works in this project:
+- By default `src/components/VisitCounter.js` calls CountAPI at the namespace/key `espwebtool/total_visits` to increment and fetch the global total.
+- If CountAPI is unavailable the component falls back to a localStorage-based total for the current browser.
+
+To customize:
+- Create your own CountAPI namespace/key and update `COUNTAPI_NAMESPACE` and `COUNTAPI_KEY` in `src/components/VisitCounter.js`.
+- Or implement a server endpoint `/api/visit` that increments a persistent counter and returns `{ "total": N }`.
+
+There are also hosted analytics services (Plausible, Umami) that provide privacy-focused visitor counts if you prefer a full analytics solution.
