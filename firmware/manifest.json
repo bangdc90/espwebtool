@@ -6,7 +6,7 @@
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
       "description": "Full tiếng việt, Hi Lily để đánh thức",
-      "path": "lily_16MB.bin",
+      "path": "lily_16MB_new.bin",
       "address": "0"
     },
     {
