@@ -2,6 +2,14 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Chai nước MINECRAFT AI",
+      "youtube": "To be uploaded",
+      "chipFamily": "ESP32S3",
+      "description": "Thay đổi màu sắc bằng giọng nói\n- XiaoZhi AI bot V2.0.3\n- Hi Lily để đánh thức",
+      "path": "lily_RGB_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Chatbot AI full Tiếng Việt",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
