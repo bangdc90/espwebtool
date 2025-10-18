@@ -3,7 +3,7 @@
   "builds": [
     {
       "title": "Mạch tím + TFT 2.4inch",
-      "youtube": "To be uploaded",
+      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
       "description": "Hỗ trợ màn hình TFT 2.4 inch, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Lily hoặc Hi Telly để đánh thức",
       "path": "lily_LCD24inch_16MB.bin",
