@@ -2,6 +2,14 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
+      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
+      "chipFamily": "ESP32S3",
+      "description": "Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Lily hoặc Hi Telly để đánh thức",
+      "path": "lily_LCD24inch_landscape_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
