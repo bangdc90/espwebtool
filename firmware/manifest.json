@@ -2,10 +2,18 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Mạch tím + OLED",
+      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
+      "chipFamily": "ESP32S3",
+      "description": "-Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Chơi nhạc\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_OLED_dual_mic_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Lily hoặc Hi Telly để đánh thức",
+      "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_landscape_16MB.bin",
       "address": "0"
     },
@@ -13,7 +21,7 @@
       "title": "Mạch tím + TFT 2.4inch",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "- Hỗ trợ màn hình TFT 2.4 inch, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Lily hoặc Hi Telly để đánh thức",
+      "description": "- Hỗ trợ màn hình TFT 2.4 inch, 240x320\n- Chơi nhạc, có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_16MB.bin",
       "address": "0"
     },
