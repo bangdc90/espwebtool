@@ -37,7 +37,7 @@
       "title": "Chatbot AI full Tiếng Việt (Mạch Tím)",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
-      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Full tiếng việt, Hi Lily để đánh thức",
+      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Nghe nhạc Việt nam\n- Full tiếng việt, Hi Lily để đánh thức",
       "path": "lily_16MB_new.bin",
       "address": "0"
     },
