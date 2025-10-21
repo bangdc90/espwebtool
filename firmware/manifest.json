@@ -2,10 +2,10 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
-      "title": "Mạch tím + OLED",
+      "title": "Mạch tím + OLED + 2 MIC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "-Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Chơi nhạc\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Chơi nhạc\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_OLED_dual_mic_16MB.bin",
       "address": "0"
     },
