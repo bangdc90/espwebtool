@@ -2,6 +2,14 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Bộ điều khiển AI trung tâm",
+      "youtube": "tobe added",
+      "chipFamily": "ESP32 - C3",
+      "description": "- Sử dụng kết hợp với AI xiaozhi\n- Điều khiển 7 thiết bị bằng giọng nói",
+      "path": "AI_center_4MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + OLED + 2 MIC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
