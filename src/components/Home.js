@@ -38,10 +38,10 @@ const Home = (props) => {
                         </Box>
 
                         <Alert severity='info' align='left'>
-                            1. Click on Connect<br />
-                            2. Plug in your ESP & select the port<br />
-                            3. Select firmware from the list<br />
-                            4. Click Load Firmware, then Program 😊<br />
+                            1. Giữ nút boot (nút đánh thức)<br />
+                            2. Cắm dây USB vào mạch<br />
+                            3. Thả nút boot, bây giờ đã ở chế độ nạp chương trình<br />
+                            4. Click CONNECT để kết nối 😊<br />
                         </Alert>
                     </Box>
 
