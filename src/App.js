@@ -15,6 +15,7 @@ import Buttons from './components/Buttons'
 import Settings from './components/Settings'
 import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
+import DonateImage from './components/DonateImage'
 
 import { connectESP, formatMacAddr, sleep, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
@@ -193,6 +194,9 @@ const App = () => {
   return (
     <Box sx={{ minWidth: '25rem' }}>
       <Header sx={{ mb: '1rem' }} />
+      
+      {/* Donate Image - Fixed position at top right */}
+      <DonateImage />
 
       <Grid container spacing={1} direction='column' justifyContent='space-around' alignItems='center' sx={{ minHeight: 'calc(100vh - 116px)' }}>
 
