@@ -27,7 +27,7 @@ const DonateImage = () => {
                 src="/donate.jpg"
                 alt="Donate"
                 sx={{
-                    width: '120px', // Kích thước cố định cho desktop
+                    width: '300px', // Tăng kích thước lên 300px cho desktop
                     height: 'auto',
                     borderRadius: '4px',
                     display: 'block'
