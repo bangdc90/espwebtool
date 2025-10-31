@@ -2,13 +2,13 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
-      "title": "Bộ điều khiển AI trung tâm",
-      "youtube": "https://youtu.be/70vwmX61oG4",
-      "chipFamily": "ESP32 - C3",
-      "description": "- Sử dụng kết hợp với AI xiaozhi\n- Điều khiển 7 thiết bị bằng giọng nói",
-      "path": "AI_center_4MB.bin",
+      "title": "Chatbot AI full Tiếng Việt (Mạch Tím + 1 MIC)",
+      "youtube": "https://youtu.be/8bkfMLDgnlE",
+      "chipFamily": "ESP32S3",
+      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
+      "path": "lily_16MB_new.bin",
       "address": "0"
-    },
+    },    
     {
       "title": "Mạch tím + OLED + 2 MIC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
@@ -18,11 +18,11 @@
       "address": "0"
     },
     {
-      "title": "Chatbot AI full Tiếng Việt (Mạch Tím + 1 MIC)",
-      "youtube": "https://youtu.be/8bkfMLDgnlE",
-      "chipFamily": "ESP32S3",
-      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
-      "path": "lily_16MB_new.bin",
+      "title": "Bộ điều khiển AI trung tâm",
+      "youtube": "https://youtu.be/70vwmX61oG4",
+      "chipFamily": "ESP32 - C3",
+      "description": "- Sử dụng kết hợp với AI xiaozhi\n- Điều khiển 7 thiết bị bằng giọng nói",
+      "path": "AI_center_4MB.bin",
       "address": "0"
     },
     {
