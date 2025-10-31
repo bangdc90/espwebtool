@@ -15,7 +15,7 @@ const Buttons = (props) => {
                     disabled={props.disabled}
                     size='large'
                 >
-                    Program
+                    NẠP CHƯƠNG TRÌNH
                 </Button>
             </Grid>
         </Grid>

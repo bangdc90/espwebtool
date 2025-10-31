@@ -7,11 +7,9 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
 import CircularProgress from '@mui/material/CircularProgress'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import Alert from '@mui/material/Alert'
@@ -56,9 +54,11 @@ const PreBuiltFirmware = (props) => {
             setManifestName(manifest.name || 'Firmware Collection')
             setManifestLoaded(true)
             
-            // Auto-select first firmware if available
+            // Auto-select and load first firmware if available
             if (manifest.builds && manifest.builds.length > 0) {
                 setSelectedFirmware(manifest.builds[0])
+                // Tự động load firmware đầu tiên
+                loadFirmware(manifest.builds[0])
             }
         } catch (error) {
             console.error('Error loading manifest:', error)
@@ -86,6 +86,8 @@ const PreBuiltFirmware = (props) => {
                         setManifestLoaded(true)
                         if (manifest.builds && manifest.builds.length > 0) {
                             setSelectedFirmware(manifest.builds[0])
+                            // Tự động load firmware đầu tiên
+                            loadFirmware(manifest.builds[0])
                         }
                         return
                     }
@@ -277,9 +279,8 @@ const PreBuiltFirmware = (props) => {
 
     const handleFirmwareSelect = (firmware) => {
         setSelectedFirmware(firmware)
-        setLoadingStatus('idle')
-        setFirmwareBlob(null)
-        props.setUploads([])
+        // Tự động load firmware ngay khi chọn
+        loadFirmware(firmware)
     }
 
     const getStatusIcon = () => {
@@ -291,20 +292,20 @@ const PreBuiltFirmware = (props) => {
             case 'error':
                 return <ErrorIcon color="error" />
             default:
-                return <CloudDownloadIcon />
+                return null
         }
     }
 
     const getStatusText = () => {
         switch (loadingStatus) {
             case 'loading':
-                return 'Loading firmware...'
+                return 'Đang tải firmware...'
             case 'loaded':
-                return `Firmware loaded (${(firmwareBlob?.size || 0)} bytes) + partition table`
+                return `Firmware đã sẵn sàng (${(firmwareBlob?.size || 0)} bytes). Nhấn "NẠP CHƯƠNG TRÌNH" để flash.`
             case 'error':
-                return 'Error loading firmware'
+                return 'Lỗi khi tải firmware'
             default:
-                return 'Ready to load firmware'
+                return 'Sẵn sàng tải firmware'
         }
     }
 
@@ -448,17 +449,6 @@ const PreBuiltFirmware = (props) => {
                             </Box>
                         )}
                     </CardContent>
-                    
-                    <CardActions>
-                        <Button 
-                            variant="contained"
-                            onClick={() => loadFirmware(selectedFirmware)}
-                            disabled={loadingStatus === 'loading'}
-                            startIcon={<CloudDownloadIcon />}
-                        >
-                            {loadingStatus === 'loaded' ? 'Reload' : 'Load'} Firmware
-                        </Button>
-                    </CardActions>
                 </Card>
             )}
         </Box>
