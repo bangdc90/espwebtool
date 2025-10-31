@@ -18,6 +18,14 @@
       "address": "0"
     },
     {
+      "title": "Chatbot AI full Tiếng Việt (Mạch Tím + 1 MIC)",
+      "youtube": "https://youtu.be/8bkfMLDgnlE",
+      "chipFamily": "ESP32S3",
+      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
+      "path": "lily_16MB_new.bin",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
@@ -39,14 +47,6 @@
       "chipFamily": "ESP32S3",
       "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Thay đổi màu sắc bằng giọng nói\n- XiaoZhi AI bot V2.0.3\n- Hi Lily để đánh thức",
       "path": "lily_RGB_16MB.bin",
-      "address": "0"
-    },
-    {
-      "title": "Chatbot AI full Tiếng Việt (Mạch Tím)",
-      "youtube": "https://youtu.be/8bkfMLDgnlE",
-      "chipFamily": "ESP32S3",
-      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
-      "path": "lily_16MB_new.bin",
       "address": "0"
     },
     {
