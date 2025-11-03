@@ -12,7 +12,7 @@ const Header = (props) => {
 
     const fetchGetVisits = async () => {
         try {
-            const res = await fetch("https://visitor-counter.<your-subdomain>.workers.dev/get");
+            const res = await fetch("https://visitor-counter.congbang2709.workers.dev/get");
             const data = await res.json();
             if (data.totalVisits !== undefined) setTotalVisits(data.totalVisits);
             if (data.todayVisits !== undefined) setTodayVisits(data.todayVisits);
@@ -23,7 +23,7 @@ const Header = (props) => {
 
     const fetchUpdateVisits = async () => {
         try {
-            const res = await fetch("https://visitor-counter.<your-subdomain>.workers.dev/update");
+            const res = await fetch("https://visitor-counter.congbang2709.workers.dev/update");
             const data = await res.json();
 
             if (data.message && data.message.includes("Too frequent")) {
