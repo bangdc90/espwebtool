@@ -2,6 +2,22 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Mạch tím + TFT 2.4inch - 2 MIC",
+      "youtube": "tobe",
+      "chipFamily": "ESP32S3",
+      "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình ST7789V TFT 2.4 inch\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_LCD2_4_dual_mic_16MB.bin",
+      "address": "0"
+    },
+    {
+      "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
+      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
+      "chipFamily": "ESP32S3",
+      "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_LCD24inch_landscape_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Chatbot AI full Tiếng Việt (Mạch Tím + 1 MIC)",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
@@ -15,14 +31,6 @@
       "chipFamily": "ESP32S3",
       "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_OLED_dual_mic_16MB.bin",
-      "address": "0"
-    },
-    {
-      "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
-      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
-      "chipFamily": "ESP32S3",
-      "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "lily_LCD24inch_landscape_16MB.bin",
       "address": "0"
     },
     {
