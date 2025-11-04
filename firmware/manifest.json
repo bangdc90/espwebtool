@@ -2,6 +2,14 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "Mạch tím + TFT 2.4inch - 2 MIC",
+      "youtube": "tobe",
+      "chipFamily": "ESP32S3",
+      "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình ST7789V TFT 2.4 inch\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_LCD2_4_dual_mic_16MB.bin",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
