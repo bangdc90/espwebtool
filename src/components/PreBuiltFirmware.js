@@ -14,7 +14,12 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import Alert from '@mui/material/Alert'
 import Link from '@mui/material/Link'
 import YouTubeIcon from '@mui/icons-material/YouTube'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import LockIcon from '@mui/icons-material/Lock'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
 
+import BuyKeyDialog from './BuyKeyDialog'
 import styles from './FileList.module.css'
 
 const PreBuiltFirmware = (props) => {
@@ -24,6 +29,10 @@ const PreBuiltFirmware = (props) => {
     const [firmwareBlob, setFirmwareBlob] = useState(null)
     const [manifestLoaded, setManifestLoaded] = useState(false)
     const [manifestName, setManifestName] = useState('')
+    const [keyInput, setKeyInput] = useState('')
+    const [keyActivated, setKeyActivated] = useState(false)
+    const [buyKeyDialogOpen, setBuyKeyDialogOpen] = useState(false)
+    const [keyVerifying, setKeyVerifying] = useState(false)
 
     useEffect(() => {
         loadManifest()
@@ -278,8 +287,59 @@ const PreBuiltFirmware = (props) => {
 
     const handleFirmwareSelect = (firmware) => {
         setSelectedFirmware(firmware)
+        // Reset key activation status when switching firmware
+        setKeyActivated(false)
+        setKeyInput('')
+        // Notify parent component about firmware selection
+        if (props.setSelectedFirmwareInfo) {
+            props.setSelectedFirmwareInfo(firmware)
+        }
+        if (props.setKeyActivated) {
+            props.setKeyActivated(false)
+        }
         // Tự động load firmware ngay khi chọn
         loadFirmware(firmware)
+    }
+
+    const verifyKey = async (key) => {
+        try {
+            setKeyVerifying(true)
+            const response = await fetch(`https://keymanager.congbang2709.workers.dev/verifyKey?key=${encodeURIComponent(key)}`, {
+                method: 'GET',
+                cache: 'no-cache'
+            })
+            
+            const result = await response.json()
+            setKeyVerifying(false)
+            
+            if (result.status === 'OK') {
+                return true
+            }
+            return false
+        } catch (error) {
+            setKeyVerifying(false)
+            return false
+        }
+    }
+
+    const handleActivateKey = async () => {
+        if (!keyInput.trim()) {
+            alert('Vui lòng nhập key')
+            return
+        }
+
+        const isValid = await verifyKey(keyInput.trim())
+        
+        if (isValid) {
+            setKeyActivated(true)
+            // Notify parent component
+            if (props.setKeyActivated) {
+                props.setKeyActivated(true)
+            }
+            alert('Đã kích hoạt key (Mỗi Key chỉ được flash duy nhất 1 lần, không thể tái sử dụng, cân nhắc trước khi nạp)\n\nVui lòng bấm Nạp Chương Trình để nạp')
+        } else {
+            alert('Key không hợp lệ hoặc đã được sử dụng')
+        }
     }
 
     const getStatusIcon = () => {
@@ -447,9 +507,48 @@ const PreBuiltFirmware = (props) => {
                                 </Link>
                             </Box>
                         )}
+                        
+                        {/* Key activation section for paid firmware */}
+                        {selectedFirmware.requireKey && (
+                            <Box mt={3} p={2} sx={{ bgcolor: 'rgba(255, 193, 7, 0.1)', borderRadius: 1 }}>
+                                <Box display="flex" alignItems="center" gap={1} mb={2}>
+                                    {keyActivated ? <LockOpenIcon color="success" /> : <LockIcon color="warning" />}
+                                    <Typography variant="body2" fontWeight="bold" color={keyActivated ? 'success.main' : 'warning.main'}>
+                                        {keyActivated ? 'Key đã được kích hoạt' : 'Firmware này cần key để nạp'}
+                                    </Typography>
+                                </Box>
+                                
+                                {!keyActivated && (
+                                    <Box display="flex" gap={1} alignItems="center">
+                                        <TextField
+                                            size="small"
+                                            placeholder="Nhập key..."
+                                            value={keyInput}
+                                            onChange={(e) => setKeyInput(e.target.value)}
+                                            disabled={keyVerifying}
+                                            fullWidth
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleActivateKey}
+                                            disabled={keyVerifying || !keyInput.trim()}
+                                            sx={{ minWidth: '120px' }}
+                                        >
+                                            {keyVerifying ? <CircularProgress size={20} /> : 'Kích hoạt'}
+                                        </Button>
+                                    </Box>
+                                )}
+                            </Box>
+                        )}
                     </CardContent>
                 </Card>
             )}
+            
+            {/* Buy Key Dialog */}
+            <BuyKeyDialog 
+                open={buyKeyDialogOpen}
+                onClose={() => setBuyKeyDialogOpen(false)}
+            />
         </Box>
     )
 }

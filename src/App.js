@@ -16,6 +16,7 @@ import Settings from './components/Settings'
 import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 import DonateImage from './components/DonateImage'
+import BuyKeyDialog from './components/BuyKeyDialog'
 
 import { connectESP, formatMacAddr, sleep, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
@@ -31,6 +32,9 @@ const App = () => {
   const [confirmProgram, setConfirmProgram] = React.useState(false) // Confirm Flash Window
   const [flashing, setFlashing] = React.useState(false) // Enable/Disable buttons
   const [chipName, setChipName] = React.useState('') // ESP8266 or ESP32
+  const [selectedFirmwareInfo, setSelectedFirmwareInfo] = React.useState(null) // Selected firmware info
+  const [keyActivated, setKeyActivated] = React.useState(false) // Key activation status
+  const [buyKeyDialogOpen, setBuyKeyDialogOpen] = React.useState(false) // Buy key dialog
 
   useEffect(() => {
     setSettings(loadSettings())
@@ -226,6 +230,8 @@ const App = () => {
             <PreBuiltFirmware
               setUploads={setUploads}
               chipName={chipName}
+              setSelectedFirmwareInfo={setSelectedFirmwareInfo}
+              setKeyActivated={setKeyActivated}
             />
           </Grid>
         }
@@ -236,6 +242,9 @@ const App = () => {
             <Buttons
               program={() => setConfirmProgram(true)}
               disabled={flashing}
+              selectedFirmware={selectedFirmwareInfo}
+              keyActivated={keyActivated}
+              onBuyKey={() => setBuyKeyDialogOpen(true)}
             />
           </Grid>
         }
@@ -263,6 +272,12 @@ const App = () => {
         text={'Flashing new firmware will override the current firmware.'}
         onOk={program}
         onCancel={() => setConfirmProgram(false)}
+      />
+
+      {/* Buy Key Dialog */}
+      <BuyKeyDialog
+        open={buyKeyDialogOpen}
+        onClose={() => setBuyKeyDialogOpen(false)}
       />
 
       {/* Toaster */}
