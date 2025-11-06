@@ -89,20 +89,21 @@
       "path": "mochi_v1.bin",
       "address": "10000"
     },
-	{
-      "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
-      "youtube": "https://youtu.be/XIy89oY_8sA",
-      "chipFamily": "ESP32C3",
-      "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
-      "path": "mochi_v1_reverted_color.bin",
-      "address": "10000"
-    },
-	{
-      "title": "Hốc Trưởng",
-      "chipFamily": "ESP32C3",
-      "description": "Chơi video Hốc Trưởng:\n- Link Hướng dẫn: tiktok Mrvocsi\n- Màn hình TFT 1.77 inch 160x128\n- Esp32-C3\n- Nút cảm ứng",
-      "path": "fw_hoc_truong.bin",
-      "address": "10000"
-    }
+    {
+        "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
+        "youtube": "https://youtu.be/XIy89oY_8sA",
+        "chipFamily": "ESP32C3",
+        "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
+        "path": "mochi_v1_reverted_color.bin",
+        "address": "10000"
+      },
+    {
+        "title": "Hốc Trưởng",
+        "chipFamily": "ESP32C3",
+        "description": "Chơi video Hốc Trưởng:\n- Link Hướng dẫn: tiktok Mrvocsi\n- Màn hình TFT 1.77 inch 160x128\n- Esp32-C3\n- Nút cảm ứng",
+        "path": "fw_hoc_truong.bin",
+        "address": "10000",
+        "requireKey": true
+      }
   ]
 }
