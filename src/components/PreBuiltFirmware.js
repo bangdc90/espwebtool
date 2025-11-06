@@ -556,6 +556,8 @@ const PreBuiltFirmware = (props) => {
 PreBuiltFirmware.propTypes = {
     setUploads: PropTypes.func.isRequired,
     chipName: PropTypes.string,
+    setSelectedFirmwareInfo: PropTypes.func,
+    setKeyActivated: PropTypes.func,
 }
 
 export default PreBuiltFirmware
