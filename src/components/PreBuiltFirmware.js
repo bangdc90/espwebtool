@@ -408,7 +408,7 @@ const PreBuiltFirmware = (props) => {
             
             <Grid container spacing={2}>
                 {firmwareList.map((firmware, index) => (
-                    <Grid item xs={12} md={6} key={`${firmware.title || firmware.chipFamily}-${index}`}>
+                    <Grid item xs={12} sm={6} md={4} key={`${firmware.title || firmware.chipFamily}-${index}`}>
                         <Card 
                             variant="outlined" 
                             sx={{ 
