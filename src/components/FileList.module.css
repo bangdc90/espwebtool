@@ -1,6 +1,6 @@
 .box {
     width: calc(100vw - 1rem);
-    max-width: 40rem;
+    max-width: 90rem;
     min-width: 25rem;
 }
 
