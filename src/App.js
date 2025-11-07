@@ -17,6 +17,7 @@ import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 import DonateImage from './components/DonateImage'
 import BuyKeyDialog from './components/BuyKeyDialog'
+import DonationDialog from './components/DonationDialog'
 
 import { connectESP, formatMacAddr, sleep, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
@@ -35,6 +36,7 @@ const App = () => {
   const [selectedFirmwareInfo, setSelectedFirmwareInfo] = React.useState(null) // Selected firmware info
   const [keyActivated, setKeyActivated] = React.useState(false) // Key activation status
   const [buyKeyDialogOpen, setBuyKeyDialogOpen] = React.useState(false) // Buy key dialog
+  const [donationDialogOpen, setDonationDialogOpen] = React.useState(false) // Donation dialog for free firmware
 
   useEffect(() => {
     setSettings(loadSettings())
@@ -119,6 +121,35 @@ const App = () => {
     } finally {
       setConnecting(false)
     }
+  }
+
+  // Handle program button click - show donation dialog for free firmware first
+  const handleProgramClick = () => {
+    // Check if firmware requires key (paid firmware)
+    const isFreefirmware = !selectedFirmwareInfo?.requireKey
+    
+    if (isFreefirmware) {
+      // Show donation dialog first for free firmware
+      setDonationDialogOpen(true)
+    } else {
+      // For paid firmware, go directly to confirm dialog
+      setConfirmProgram(true)
+    }
+  }
+
+  // Handle donation dialog OK - proceed to confirm dialog
+  const handleDonationOk = () => {
+    setDonationDialogOpen(false)
+    setConfirmProgram(true)
+  }
+
+  // Enable test mode - bypass connection
+  const enableTestMode = () => {
+    setConnected(true)
+    setChipName('ESP32 (Test Mode)')
+    addOutput('Test Mode Enabled - No device connected')
+    addOutput('You can test the UI without a real device')
+    toast.info('Test Mode Enabled 🧪', { position: 'top-center', autoClose: 3000 })
   }
 
   // Flash Firmware
@@ -211,6 +242,7 @@ const App = () => {
               connect={clickConnect}
               supported={supported}
               openSettings={() => setSettingsOpen(true)}
+              testMode={enableTestMode}
             />
           </Grid>
         }
@@ -240,7 +272,7 @@ const App = () => {
         {connected &&
           <Grid item>
             <Buttons
-              program={() => setConfirmProgram(true)}
+              program={handleProgramClick}
               disabled={flashing}
               selectedFirmware={selectedFirmwareInfo}
               keyActivated={keyActivated}
@@ -269,9 +301,16 @@ const App = () => {
       {/* Confirm Flash/Program Window */}
       <ConfirmWindow
         open={confirmProgram}
-        text={'Flashing new firmware will override the current firmware.'}
+        text={'Nạp chương trình mới sẽ ghi đè lên chương trình hiện tại.'}
         onOk={program}
         onCancel={() => setConfirmProgram(false)}
+      />
+
+      {/* Donation Dialog for Free Firmware */}
+      <DonationDialog
+        open={donationDialogOpen}
+        onOk={handleDonationOk}
+        onClose={() => setDonationDialogOpen(false)}
       />
 
       {/* Buy Key Dialog */}

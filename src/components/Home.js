@@ -13,6 +13,9 @@ import OperaIcon from '../icons/Opera'
 import SettingsIcon from '@mui/icons-material/Settings'
 
 const Home = (props) => {
+    // Check if test mode is enabled via environment variable
+    const isTestModeEnabled = process.env.REACT_APP_ENABLE_TEST_MODE === 'true'
+
     return (
         <Grid
             container
@@ -36,6 +39,15 @@ const Home = (props) => {
                                 <SettingsIcon />
                             </Button>
                         </Box>
+
+                        {/* Test Mode button - only show when enabled in .env.local */}
+                        {isTestModeEnabled && (
+                            <Box>
+                                <Button variant='outlined' color='warning' size='small' onClick={props.testMode} sx={{ m: 1 }}>
+                                    🧪 Test Mode (Bypass Connect)
+                                </Button>
+                            </Box>
+                        )}
 
                         <Alert severity='info' align='left'>
                             1. Giữ nút boot (nút đánh thức)<br />
@@ -81,6 +93,7 @@ Home.propTypes = {
     connect: PropTypes.func,
     supported: PropTypes.func,
     openSettings: PropTypes.func,
+    testMode: PropTypes.func,
 }
 
 export default Home
