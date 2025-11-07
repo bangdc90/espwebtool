@@ -35,10 +35,10 @@
       "address": "0"
     },
     {
-      "title": "Chatbot AI full Tiếng Việt (Mạch Tím + 1 MIC)",
+      "title": "Chatbot AI full Tiếng Việt (Mạch Tím + OLED + 1 MIC)",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
-      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
+      "description": "- Hỗ trợ màn hình OLED, 128x64\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
       "path": "lily_16MB_new.bin",
       "address": "0"
     },    
