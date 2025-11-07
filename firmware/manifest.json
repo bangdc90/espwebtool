@@ -2,6 +2,15 @@
   "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "title": "AI D-Solution 1.69inch (thay màn hình)",
+      "youtube": "tobe",
+      "chipFamily": "ESP32S3",
+      "description": "- Màn hình ST7789V IPS 1.69 inch\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_dsolution_1.69_16MB.bin",
+      "requireKey": true,
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch - 2 MIC - Hiển thị chiều NGANG",
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
