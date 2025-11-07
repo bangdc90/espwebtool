@@ -19,7 +19,7 @@ import DonateImage from './components/DonateImage'
 import BuyKeyDialog from './components/BuyKeyDialog'
 import DonationDialog from './components/DonationDialog'
 
-import { connectESP, formatMacAddr, sleep, supported } from './lib/esp'
+import { connectESP, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
 
 const App = () => {
@@ -53,8 +53,7 @@ const App = () => {
   // Connect to ESP & init flasher stuff
   const clickConnect = async () => {
     if (espStub) {
-      await espStub.disconnect()
-      await espStub.port.close()
+      await espStub.transport.disconnect()
       setEspStub(undefined)
       return
     }
@@ -67,44 +66,46 @@ const App = () => {
     })
 
     try {
-      toast.info('Connecting...', { 
+      toast.info('Đang kết nối...', { 
         position: 'top-center', 
         autoClose: false, 
         toastId: 'connecting' 
       })
       toast.update('connecting', {
-        render: 'Connecting...',
+        render: 'Đang kết nối...',
         type: toast.TYPE.INFO,
         autoClose: false
       })
 
       setConnecting(true)
 
-      await esploader.initialize()
+      // Connect and detect chip (esptool-js API)
+      await esploader.main()
 
-      addOutput(`Connected to ${esploader.chipName}`)
-      addOutput(`MAC Address: ${formatMacAddr(esploader.macAddr())}`)
+      addOutput(`Connected to ${esploader.chip.CHIP_NAME}`)
+      addOutput(`MAC Address: (Reading MAC address from chip...)`)
 
-      const newEspStub = await esploader.runStub()
+      // NOTE: Do NOT call runStub() before writeFlash()
+      // runStub() loads stub into RAM which may conflict with firmware addresses
+      // writeFlash() will handle everything automatically
 
       setConnected(true)
       toast.update('connecting', {
-        render: 'Connected 🚀',
+        render: 'Kết nối thành công 🚀',
         type: toast.TYPE.SUCCESS,
         autoClose: 3000
       })
 
-      //console.log(newEspStub)
-
-      newEspStub.port.addEventListener('disconnect', () => {
+      // Listen for disconnect on transport device
+      esploader.transport.device.addEventListener('disconnect', () => {
         setConnected(false)
         setEspStub(undefined)
-        toast.warning('Disconnected 💔', { position: 'top-center', autoClose: 3000, toastId: 'settings' })
+        toast.warning('Đã ngắt kết nối 💔', { position: 'top-center', autoClose: 3000, toastId: 'settings' })
         addOutput(`------------------------------------------------------------`)
       })
 
-      setEspStub(newEspStub)
-      setChipName(esploader.chipName)
+      setEspStub(esploader)
+      setChipName(esploader.chip.CHIP_NAME)
     } catch (err) {
       const shortErrMsg = `${err}`.replace('Error: ','')
 
@@ -149,7 +150,7 @@ const App = () => {
     setChipName('ESP32 (Test Mode)')
     addOutput('Test Mode Enabled - No device connected')
     addOutput('You can test the UI without a real device')
-    toast.info('Test Mode Enabled 🧪', { position: 'top-center', autoClose: 3000 })
+    toast.info('Chế độ Test đã bật 🧪', { position: 'top-center', autoClose: 3000 })
   }
 
   // Flash Firmware
@@ -157,9 +158,7 @@ const App = () => {
     setConfirmProgram(false)
     setFlashing(true)
 
-    let success = false
-
-    const toArrayBuffer = (inputFile) => {
+    const toBinaryString = (inputFile) => {
       const reader = new FileReader()
 
       return new Promise((resolve, reject) => {
@@ -171,56 +170,84 @@ const App = () => {
         reader.onload = () => {
           resolve(reader.result);
         }
-        reader.readAsArrayBuffer(inputFile)
+        // esptool-js requires binary string, not ArrayBuffer
+        reader.readAsBinaryString(inputFile)
       })
     }
 
+    // Prepare file array for esptool-js writeFlash API
+    const fileArray = []
+    
     for (let i = 0; i < uploads.length; i++) {
       const file = uploads[i]
       if (!file.fileName || !file.obj) continue
-      success = true
-
-      const fileNumber = i + 1
-      const totalFiles = uploads.length
+      
+      const contents = await toBinaryString(file.obj)
       const fileDesc = file.firmwareInfo?.title || file.fileName
       
-      addOutput(`Step ${fileNumber}/${totalFiles}: Uploading ${fileDesc} to address 0x${file.offset}`)
-      toast(`Uploading ${fileDesc}...`, { position: 'top-center', progress: 0, toastId: `upload-${i}` })
-
-      try {
-        const contents = await toArrayBuffer(file.obj)
-
-        await espStub.flashData(
-          contents,
-          (bytesWritten, totalBytes) => {
-            const progress = (bytesWritten / totalBytes)
-            const percentage = Math.floor(progress * 100)
-
-            toast.update(`upload-${i}`, { progress: progress })
-
-            addOutput(`Flashing ${fileDesc}... ${percentage}%`)
-          },
-          parseInt(file.offset, 16)
-        )
-
-        addOutput(`Completed flashing ${fileDesc}`)
-        await sleep(100)
-      } catch (e) {
-        addOutput(`ERROR flashing ${fileDesc}!`)
-        addOutput(`${e}`)
-        console.error(e)
-      }
+      fileArray.push({
+        data: contents,
+        address: parseInt(file.offset, 16)
+      })
+      
+      addOutput(`Prepared ${fileDesc} at address 0x${file.offset} (${contents.length} bytes)`)
     }
 
-    if (success) {
+    if (fileArray.length === 0) {
+      addOutput(`Please add firmware files`)
+      toast.info('Vui lòng chọn file firmware', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
+      setFlashing(false)
+      return
+    }
+
+    try {
+      addOutput(`Starting flash process...`)
+      toast.info('Đang nạp chương trình...', { position: 'top-center', autoClose: false, toastId: 'flashing' })
+
+      // Use writeFlash from esptool-js
+      await espStub.writeFlash({
+        fileArray: fileArray,
+        flashSize: 'keep',
+        flashMode: 'keep',
+        flashFreq: 'keep',
+        eraseAll: false,
+        compress: true,
+        reportProgress: (fileIndex, written, total) => {
+          const progress = (written / total)
+          const percentage = Math.floor(progress * 100)
+          const fileDesc = uploads[fileIndex]?.firmwareInfo?.title || uploads[fileIndex]?.fileName || `File ${fileIndex + 1}`
+          
+          toast.update('flashing', { 
+            render: `Flashing ${fileDesc}... ${percentage}%`,
+            progress: progress 
+          })
+          
+          addOutput(`Flashing ${fileDesc}... ${percentage}%`)
+        }
+      })
+
       addOutput(`All files flashed successfully!`)
       addOutput(`To run the new firmware please reset your device.`)
 
-      toast.success('Done! Reset ESP to run new firmware.', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
-    } else {
-      addOutput(`Please add firmware files`)
-
-      toast.info('Please add firmware files', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
+      // Dismiss the progress toast and show success toast
+      toast.dismiss('flashing')
+      toast.success('Hoàn tất! Reset thiết bị để chạy chương trình mới 🎉', { 
+        position: 'top-center', 
+        autoClose: 5000,
+        toastId: 'flash-complete'
+      })
+    } catch (e) {
+      addOutput(`ERROR flashing firmware!`)
+      addOutput(`${e}`)
+      console.error(e)
+      
+      // Dismiss progress toast and show error
+      toast.dismiss('flashing')
+      toast.error(`Lỗi nạp chương trình: ${e.message || e}`, {
+        position: 'top-center',
+        autoClose: 5000,
+        toastId: 'flash-error'
+      })
     }
 
     setFlashing(false)

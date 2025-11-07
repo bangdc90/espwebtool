@@ -2,10 +2,27 @@ import localforage from "localforage"
 
 const connectESP = async t => {
     const esploaderMod = await window.esptoolPackage;
-    const e = await navigator.serial.requestPort();
-    return t.log("Connecting..."), await e.open({
-        baudRate: t.baudRate
-    }), t.log("Connected successfully."), new esploaderMod.ESPLoader(e, t);
+    const device = await navigator.serial.requestPort();
+    
+    t.log("Connecting...");
+    
+    // Create Transport instance (esptool-js API)
+    const transport = new esploaderMod.Transport(device, true);
+    
+    // Create ESPLoader with new API structure
+    const loader = new esploaderMod.ESPLoader({
+        transport: transport,
+        baudrate: t.baudRate,
+        terminal: {
+            clean: () => {},
+            writeLine: (data) => t.log(data),
+            write: (data) => t.log(data)
+        }
+    });
+    
+    t.log("Connected successfully.");
+    
+    return loader;
 };
 
 const formatMacAddr = (macAddr) => {

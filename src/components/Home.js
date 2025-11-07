@@ -50,10 +50,8 @@ const Home = (props) => {
                         )}
 
                         <Alert severity='info' align='left'>
-                            1. Giữ nút boot (nút đánh thức)<br />
-                            2. Cắm dây USB vào mạch<br />
-                            3. Thả nút boot, bây giờ đã ở chế độ nạp chương trình<br />
-                            4. Click CONNECT để kết nối 😊<br />
+                            Cắm dây USB vào mạch và bấm CONNECT 😊<br />
+                            Không cần nhấn nút BOOT hay Wake Up
                         </Alert>
                     </Box>
 

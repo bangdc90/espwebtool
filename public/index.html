@@ -13,8 +13,10 @@
   <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
   <title>Mr Vọc Sĩ Chia Sẻ</title>
 
-  <script module>
-    window.esptoolPackage = import("https://unpkg.com/esp-web-flasher@5.1.4/dist/web/index.js?module");
+  <script type="module">
+    // Load esptool-js official library from Espressif
+    import { Transport, ESPLoader } from "https://unpkg.com/esptool-js@0.5.6/bundle.js";
+    window.esptoolPackage = Promise.resolve({ Transport, ESPLoader });
   </script>
   
 </head>
