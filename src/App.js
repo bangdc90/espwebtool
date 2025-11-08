@@ -217,12 +217,20 @@ const App = () => {
           const percentage = Math.floor(progress * 100)
           const fileDesc = uploads[fileIndex]?.firmwareInfo?.title || uploads[fileIndex]?.fileName || `File ${fileIndex + 1}`
           
-          toast.update('flashing', { 
-            render: `Flashing ${fileDesc}... ${percentage}%`,
-            progress: progress 
-          })
-          
-          addOutput(`Flashing ${fileDesc}... ${percentage}%`)
+          if (percentage >= 100) {
+            // When reached 100%, show verifying message
+            toast.update('flashing', { 
+              render: `Đang xác minh và hoàn tất... Vui lòng chờ`,
+              progress: 0.99 // Keep progress bar visible
+            })
+            addOutput(`Flashing ${fileDesc}... 100% - Verifying...`)
+          } else {
+            toast.update('flashing', { 
+              render: `Flashing ${fileDesc}... ${percentage}%`,
+              progress: progress 
+            })
+            addOutput(`Flashing ${fileDesc}... ${percentage}%`)
+          }
         }
       })
 
