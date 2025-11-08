@@ -117,12 +117,19 @@ const PreBuiltFirmware = (props) => {
             const firmwarePath = `${baseUrl}/firmware/${firmware.path}`
             const partitionsPath = `${baseUrl}/firmware/partitions.bin`
 
-            // Fetch firmware file
-            const firmwareResponse = await fetch(firmwarePath)
+            console.log('Loading firmware from:', firmwarePath)
+
+            // Fetch firmware file with timeout
+            const firmwareResponse = await fetch(firmwarePath, {
+                cache: 'no-cache'
+            })
+            
             if (!firmwareResponse.ok) {
                 throw new Error(`HTTP error! status: ${firmwareResponse.status}`)
             }
+            
             const firmwareBlob = await firmwareResponse.blob()
+            console.log('Firmware loaded:', firmwareBlob.size, 'bytes')
 
             setFirmwareBlob(firmwareBlob)
 
@@ -362,7 +369,7 @@ const PreBuiltFirmware = (props) => {
             case 'loaded':
                 return `Firmware đã sẵn sàng (${(firmwareBlob?.size || 0)} bytes). Nhấn "NẠP CHƯƠNG TRÌNH" để flash.`
             case 'error':
-                return 'Lỗi khi tải firmware'
+                return 'Lỗi khi tải firmware.\nTải lại sau vài phút, do lưu lượng truy cập hiện tại cao.'
             default:
                 return 'Sẵn sàng tải firmware'
         }
@@ -478,9 +485,21 @@ const PreBuiltFirmware = (props) => {
                         
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
                             {getStatusIcon()}
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line', textAlign: 'left' }}>
                                 {getStatusText()}
                             </Typography>
+                            {/* Reload button - only show when error */}
+                            {loadingStatus === 'error' && (
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    size="small"
+                                    onClick={() => loadFirmware(selectedFirmware)}
+                                    sx={{ ml: 'auto', minWidth: '80px' }}
+                                >
+                                    Tải Lại
+                                </Button>
+                            )}
                         </Box>
                         
                         <Typography variant="body2" color="text.secondary" mb={1}>
@@ -518,6 +537,13 @@ const PreBuiltFirmware = (props) => {
                                     </Typography>
                                 </Box>
                                 
+                                {loadingStatus === 'error' && (
+                                    <Alert severity="error" sx={{ mb: 2 }}>
+                                        Firmware chưa tải được. Vui lòng bấm &quot;Tải Lại&quot; ở trên trước khi nhập key.<br />
+                                        Tải lại sau vài phút, do lưu lượng truy cập hiện tại cao.
+                                    </Alert>
+                                )}
+                                
                                 {!keyActivated && (
                                     <Box display="flex" gap={1} alignItems="center">
                                         <TextField
@@ -525,13 +551,13 @@ const PreBuiltFirmware = (props) => {
                                             placeholder="Nhập key..."
                                             value={keyInput}
                                             onChange={(e) => setKeyInput(e.target.value)}
-                                            disabled={keyVerifying}
+                                            disabled={keyVerifying || loadingStatus !== 'loaded'}
                                             fullWidth
                                         />
                                         <Button
                                             variant="contained"
                                             onClick={handleActivateKey}
-                                            disabled={keyVerifying || !keyInput.trim()}
+                                            disabled={keyVerifying || !keyInput.trim() || loadingStatus !== 'loaded'}
                                             sx={{ minWidth: '120px' }}
                                         >
                                             {keyVerifying ? <CircularProgress size={20} /> : 'Kích hoạt'}
