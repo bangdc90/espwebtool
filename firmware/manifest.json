@@ -6,7 +6,7 @@
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
       "description": "- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "tely_dsolution_1.83_16MB.bin",
+      "path": "tely_dsolution_1.83_16MB.zip",
       "requireKey": true,
       "address": "0"
     },
@@ -15,7 +15,7 @@
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
       "description": "- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "tely_dsolution_1.69_16MB.bin",
+      "path": "tely_dsolution_1.69_16MB.zip",
       "requireKey": true,
       "address": "0"
     },
@@ -24,7 +24,7 @@
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
       "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình ST7789V TFT 2.4 inch\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "lily_LCD2_4_dual_mic_16MB.bin",
+      "path": "lily_LCD2_4_dual_mic_16MB.zip",
       "address": "0"
     },
     {
@@ -32,7 +32,7 @@
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
       "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "lily_LCD24inch_landscape_16MB.bin",
+      "path": "lily_LCD24inch_landscape_16MB.zip",
       "address": "0"
     },
     {
@@ -40,7 +40,7 @@
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
       "description": "- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều dọc, 240x320\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "lily_LCD24inch_16MB.bin",
+      "path": "lily_LCD24inch_16MB.zip",
       "address": "0"
     },
     {
@@ -48,7 +48,7 @@
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
       "description": "- Hỗ trợ màn hình OLED, 128x64\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
-      "path": "lily_16MB_new.bin",
+      "path": "lily_16MB_new.zip",
       "address": "0"
     },    
     {
@@ -56,7 +56,7 @@
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
       "description": "- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "lily_OLED_dual_mic_16MB.bin",
+      "path": "lily_OLED_dual_mic_16MB.zip",
       "address": "0"
     },
     {
@@ -64,7 +64,7 @@
       "youtube": "https://youtu.be/70vwmX61oG4",
       "chipFamily": "ESP32-C3",
       "description": "- Sử dụng kết hợp với AI xiaozhi\n- Điều khiển 7 thiết bị bằng giọng nói",
-      "path": "AI_center_4MB.bin",
+      "path": "AI_center_4MB.zip",
       "address": "0"
     },
     {
@@ -72,7 +72,7 @@
       "youtube": "https://youtu.be/z6wGvskvApI",
       "chipFamily": "ESP32S3",
       "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Thay đổi màu sắc bằng giọng nói\n- XiaoZhi AI bot V2.0.3\n- Hi Lily để đánh thức",
-      "path": "lily_RGB_16MB.bin",
+      "path": "lily_RGB_16MB.zip",
       "address": "0"
     },
     {
@@ -80,7 +80,7 @@
       "youtube": "https://youtu.be/S8o4g12h2Ko",
       "chipFamily": "ESP32C3",
       "description": "Trạm hàn chuột siêu cấp VIP PRO",
-      "path": "solder_station_c3.bin",
+      "path": "solder_station_c3.zip",
       "address": "10000"
     },
     {
@@ -88,7 +88,7 @@
       "youtube": "https://youtu.be/1y93Rbef1E8",
       "chipFamily": "ESP32C3",
       "description": "Navigation with google maps\n- Màn hình 240x240\n- Esp32-C3\n- App Chronos trên android (Tải trên CHPlay)",
-      "path": "navigation_c3.bin",
+      "path": "navigation_c3.zip",
       "address": "10000"
     },
     {
@@ -96,7 +96,7 @@
       "youtube": "https://youtu.be/vsYloV9RQ_I",
       "chipFamily": "ESP32C3",
       "description": "Mochi V2 với 20 biểu cảm\n- Màn hình 240x240\n- Cảm biến gia tốc MPU6050\n- Esp32-C3",
-      "path": "fw_mochi_v2.bin",
+      "path": "fw_mochi_v2.zip",
       "address": "10000"
     },
     {
@@ -104,7 +104,7 @@
       "youtube": "https://youtu.be/XIy89oY_8sA",
       "chipFamily": "ESP32C3",
       "description": "FW cho mochi V1 với các chức năng:\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
-      "path": "mochi_v1.bin",
+      "path": "mochi_v1.zip",
       "address": "10000"
     },
     {
@@ -112,14 +112,14 @@
         "youtube": "https://youtu.be/XIy89oY_8sA",
         "chipFamily": "ESP32C3",
         "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
-        "path": "mochi_v1_reverted_color.bin",
+        "path": "mochi_v1_reverted_color.zip",
         "address": "10000"
       },
     {
         "title": "Hốc Trưởng",
         "chipFamily": "ESP32C3",
         "description": "Chơi video Hốc Trưởng:\n- Link Hướng dẫn: tiktok Mrvocsi\n- Màn hình TFT 1.77 inch 160x128\n- Esp32-C3\n- Nút cảm ứng",
-        "path": "fw_hoc_truong.bin",
+        "path": "fw_hoc_truong.zip",
         "address": "10000",
         "requireKey": true
       }
