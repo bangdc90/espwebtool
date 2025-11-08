@@ -3,7 +3,7 @@
   "builds": [
     {
       "title": "AI D-Solution 1.83inch (Nguyên bản)",
-      "youtube": "tobe",
+      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
       "chipFamily": "ESP32S3",
       "description": "- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.83_16MB.zip",
@@ -12,7 +12,7 @@
     },
     {
       "title": "AI D-Solution 1.69inch (thay màn hình)",
-      "youtube": "tobe",
+      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
       "chipFamily": "ESP32S3",
       "description": "- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.69_16MB.zip",
