@@ -119,6 +119,9 @@ const PreBuiltFirmware = (props) => {
 
             console.log('Loading firmware from:', firmwarePath)
 
+            // Check if file is ZIP
+            const isZipFile = firmware.path.toLowerCase().endsWith('.zip')
+
             // Fetch firmware file with timeout
             const firmwareResponse = await fetch(firmwarePath, {
                 cache: 'no-cache'
@@ -128,8 +131,43 @@ const PreBuiltFirmware = (props) => {
                 throw new Error(`HTTP error! status: ${firmwareResponse.status}`)
             }
             
-            const firmwareBlob = await firmwareResponse.blob()
-            console.log('Firmware loaded:', firmwareBlob.size, 'bytes')
+            let firmwareBlob
+            
+            // If ZIP file, extract it
+            if (isZipFile) {
+                console.log('Detected ZIP file, extracting...')
+                const zipBlob = await firmwareResponse.blob()
+                console.log('ZIP file loaded:', zipBlob.size, 'bytes')
+                
+                // Load JSZip from window (loaded from CDN)
+                if (!window.JSZip) {
+                    throw new Error('JSZip library not loaded')
+                }
+                
+                const zip = new window.JSZip()
+                const zipContent = await zip.loadAsync(zipBlob)
+                
+                // Find the .bin file inside ZIP
+                const binFiles = Object.keys(zipContent.files).filter(name => 
+                    name.toLowerCase().endsWith('.bin') && !zipContent.files[name].dir
+                )
+                
+                if (binFiles.length === 0) {
+                    throw new Error('No .bin file found in ZIP')
+                }
+                
+                // Extract first .bin file
+                const binFileName = binFiles[0]
+                console.log('Extracting:', binFileName)
+                
+                const binData = await zipContent.files[binFileName].async('arraybuffer')
+                firmwareBlob = new Blob([binData])
+                console.log('Firmware extracted:', firmwareBlob.size, 'bytes')
+            } else {
+                // Regular .bin file
+                firmwareBlob = await firmwareResponse.blob()
+                console.log('Firmware loaded:', firmwareBlob.size, 'bytes')
+            }
 
             setFirmwareBlob(firmwareBlob)
 
@@ -186,6 +224,9 @@ const PreBuiltFirmware = (props) => {
 
                 // Determine if we should skip partitions based on address
                 const addressIsZero = firmware.address === 0 || firmware.address === '0' || firmware.address === '0x0' || firmware.address === 0x0
+                
+                // Check if file is ZIP
+                const isZipFile = firmware.path.toLowerCase().endsWith('.zip')
 
                 // If address is zero, only try to load firmware
                 if (addressIsZero) {
@@ -196,16 +237,36 @@ const PreBuiltFirmware = (props) => {
                         try {
                             const firmwareResponse = await fetch(path)
                             if (firmwareResponse.ok) {
-                                firmwareBlob = await firmwareResponse.blob()
-                                uploads.push({
-                                    fileName: firmware.path,
-                                    offset: firmware.address,
-                                    obj: firmwareBlob,
-                                    firmwareInfo: firmware
-                                })
-                                firmwareLoaded = true
-                                setFirmwareBlob(firmwareBlob)
-                                break
+                                let blob
+                                
+                                // Extract ZIP if needed
+                                if (isZipFile) {
+                                    const zipBlob = await firmwareResponse.blob()
+                                    const zip = new window.JSZip()
+                                    const zipContent = await zip.loadAsync(zipBlob)
+                                    const binFiles = Object.keys(zipContent.files).filter(name => 
+                                        name.toLowerCase().endsWith('.bin') && !zipContent.files[name].dir
+                                    )
+                                    if (binFiles.length > 0) {
+                                        const binData = await zipContent.files[binFiles[0]].async('arraybuffer')
+                                        blob = new Blob([binData])
+                                    }
+                                } else {
+                                    blob = await firmwareResponse.blob()
+                                }
+                                
+                                if (blob) {
+                                    firmwareBlob = blob
+                                    uploads.push({
+                                        fileName: firmware.path,
+                                        offset: firmware.address,
+                                        obj: firmwareBlob,
+                                        firmwareInfo: firmware
+                                    })
+                                    firmwareLoaded = true
+                                    setFirmwareBlob(firmwareBlob)
+                                    break
+                                }
                             }
                         } catch (firmwareError) {
                             console.error(`Failed to load firmware from ${path}:`, firmwareError)
@@ -256,16 +317,36 @@ const PreBuiltFirmware = (props) => {
                     try {
                         const firmwareResponse = await fetch(path)
                         if (firmwareResponse.ok) {
-                            firmwareBlob = await firmwareResponse.blob()
-                            uploads.push({
-                                fileName: firmware.path,
-                                offset: firmware.address,
-                                obj: firmwareBlob,
-                                firmwareInfo: firmware
-                            })
-                            firmwareLoaded = true
-                            setFirmwareBlob(firmwareBlob)
-                            break
+                            let blob
+                            
+                            // Extract ZIP if needed
+                            if (isZipFile) {
+                                const zipBlob = await firmwareResponse.blob()
+                                const zip = new window.JSZip()
+                                const zipContent = await zip.loadAsync(zipBlob)
+                                const binFiles = Object.keys(zipContent.files).filter(name => 
+                                    name.toLowerCase().endsWith('.bin') && !zipContent.files[name].dir
+                                )
+                                if (binFiles.length > 0) {
+                                    const binData = await zipContent.files[binFiles[0]].async('arraybuffer')
+                                    blob = new Blob([binData])
+                                }
+                            } else {
+                                blob = await firmwareResponse.blob()
+                            }
+                            
+                            if (blob) {
+                                firmwareBlob = blob
+                                uploads.push({
+                                    fileName: firmware.path,
+                                    offset: firmware.address,
+                                    obj: firmwareBlob,
+                                    firmwareInfo: firmware
+                                })
+                                firmwareLoaded = true
+                                setFirmwareBlob(firmwareBlob)
+                                break
+                            }
                         }
                     } catch (firmwareError) {
                         console.error(`Failed to load firmware from ${path}:`, firmwareError)
