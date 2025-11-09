@@ -127,13 +127,19 @@ const App = () => {
   // Handle program button click - show donation dialog for free firmware first
   const handleProgramClick = () => {
     // Check if firmware requires key (paid firmware)
-    const isFreefirmware = !selectedFirmwareInfo?.requireKey
+    const needsKey = selectedFirmwareInfo?.requireKey === true
     
-    if (isFreefirmware) {
-      // Show donation dialog first for free firmware
+    if (needsKey && !keyActivated) {
+      // Firmware needs key but not activated yet - show buy key dialog
+      setBuyKeyDialogOpen(true)
+      return
+    }
+    
+    if (!needsKey) {
+      // Free firmware - Show donation dialog first
       setDonationDialogOpen(true)
     } else {
-      // For paid firmware, go directly to confirm dialog
+      // Paid firmware with key activated - go directly to confirm dialog
       setConfirmProgram(true)
     }
   }

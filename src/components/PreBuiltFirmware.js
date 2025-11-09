@@ -64,9 +64,16 @@ const PreBuiltFirmware = (props) => {
             
             // Auto-select and load first firmware if available
             if (manifest.builds && manifest.builds.length > 0) {
-                setSelectedFirmware(manifest.builds[0])
+                const firstFirmware = manifest.builds[0]
+                setSelectedFirmware(firstFirmware)
+                
+                // Notify parent component about firmware selection
+                if (props.setSelectedFirmwareInfo) {
+                    props.setSelectedFirmwareInfo(firstFirmware)
+                }
+                
                 // Tự động load firmware đầu tiên
-                loadFirmware(manifest.builds[0])
+                loadFirmware(firstFirmware)
             }
         } catch (error) {
             console.error('Error loading manifest:', error)
@@ -93,9 +100,16 @@ const PreBuiltFirmware = (props) => {
                         setManifestName(manifest.name || 'Firmware Collection')
                         setManifestLoaded(true)
                         if (manifest.builds && manifest.builds.length > 0) {
-                            setSelectedFirmware(manifest.builds[0])
+                            const firstFirmware = manifest.builds[0]
+                            setSelectedFirmware(firstFirmware)
+                            
+                            // Notify parent component about firmware selection
+                            if (props.setSelectedFirmwareInfo) {
+                                props.setSelectedFirmwareInfo(firstFirmware)
+                            }
+                            
                             // Tự động load firmware đầu tiên
-                            loadFirmware(manifest.builds[0])
+                            loadFirmware(firstFirmware)
                         }
                         return
                     }

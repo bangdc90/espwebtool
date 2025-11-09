@@ -5,11 +5,24 @@ import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 
 const Buttons = (props) => {
+    const hasFirmware = props.selectedFirmware != null
     const needsKey = props.selectedFirmware?.requireKey === true
-    const canProgram = !needsKey || props.keyActivated
-    const buttonText = !canProgram ? 'Bấm Mua Key để nạp' : 'NẠP CHƯƠNG TRÌNH'
+    const canProgram = hasFirmware && (!needsKey || props.keyActivated)
+    
+    // Determine button text
+    let buttonText = 'NẠP CHƯƠNG TRÌNH'
+    if (!hasFirmware) {
+        buttonText = 'Chọn firmware để nạp'
+    } else if (needsKey && !props.keyActivated) {
+        buttonText = 'Bấm Mua Key để nạp'
+    }
     
     const handleClick = () => {
+        if (!hasFirmware) {
+            // No firmware selected - do nothing
+            return
+        }
+        
         if (canProgram) {
             props.program()
         } else {
@@ -27,7 +40,7 @@ const Buttons = (props) => {
                     variant='contained'
                     color='success'
                     onClick={handleClick}
-                    disabled={props.disabled}
+                    disabled={props.disabled || !hasFirmware}
                     size='large'
                 >
                     {buttonText}
