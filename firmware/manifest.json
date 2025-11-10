@@ -47,7 +47,7 @@
       "title": "Chatbot AI full Tiếng Việt (Mạch Tím + OLED + 1 MIC)",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
-      "description": "- Hỗ trợ màn hình OLED, 128x64\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
+      "description": "- FW mới nhất 2.0.4\n- Hỗ trợ màn hình OLED, 128x64\n- TIN TỨC, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
       "path": "lily_16MB_new.zip",
       "address": "0"
     },    
