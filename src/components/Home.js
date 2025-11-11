@@ -48,6 +48,7 @@ const Home = (props) => {
 
                         <Alert severity='info' align='left'>
                             Cắm dây USB vào mạch và bấm CONNECT 😊<br />
+                            Danh sách FW sẽ hiện lên sau khi kết nối xong 😊<br />
                             Không cần nhấn nút BOOT hay Wake Up
                         </Alert>
                     </Box>
