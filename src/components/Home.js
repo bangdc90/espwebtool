@@ -57,28 +57,23 @@ const Home = (props) => {
 
                     :
 
-                    <Alert severity='warning'>
-                        <AlertTitle>Your browser doesn&apos;t support Web Serial 😭</AlertTitle>
-                        Try using&nbsp;
-                        <a href='https://www.google.com/chrome/' target='blank'>
-                            <ChromeIcon fontSize='inherit' /> <b>Chrome</b>
-                        </a>
-                        ,&nbsp;
-                        <a href='https://www.microsoft.com/en-us/edge' target='blank'>
-                            <EdgeIcon fontSize='inherit' /> <b>Edge</b>
-                        </a>
-                        , or&nbsp;
-                        <a href='https://www.opera.com/' target='blank'>
-                            <OperaIcon fontSize='inherit' /> <b>Opera</b>
-                        </a>
-                        <br />
-                        (IOS & Android browsers are not supported)
-                        <br />
-                        <br />
-                        Learn more about&nbsp;
-                        <a href='https://developer.mozilla.org/en-US/docs/Web/API/Serial#browser_compatibility' target='blank'>
-                            browser compatibility
-                        </a>
+                    <Alert severity='error' sx={{ 
+                        fontSize: '1.1rem',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        '& .MuiAlert-message': {
+                            width: '100%'
+                        }
+                    }}>
+                        <AlertTitle sx={{ fontSize: '1.3rem', fontWeight: 'bold', mb: 2 }}>
+                            ⚠️ CHÚ Ý ⚠️
+                        </AlertTitle>
+                        <Box sx={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
+                            Sử dụng MÁY TÍNH để truy cập và nạp chương trình.
+                            <br />
+                            <br />
+                            <strong>Không hỗ trợ nạp bằng ĐIỆN THOẠI</strong>
+                        </Box>
                     </Alert>
                 }
             </Grid>
