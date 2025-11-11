@@ -7,9 +7,6 @@ import Button from '@mui/material/Button'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 
-import ChromeIcon from '../icons/Chrome'
-import EdgeIcon from '../icons/Edge'
-import OperaIcon from '../icons/Opera'
 import SettingsIcon from '@mui/icons-material/Settings'
 
 const Home = (props) => {
