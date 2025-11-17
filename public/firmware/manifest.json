@@ -18,6 +18,14 @@
       "address": "0"
     },
     {
+      "title": "Mạch tím + TFT 2.4inch - BLUETOOTH - NGANG",
+      "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
+      "chipFamily": "ESP32S3",
+      "description": "- Phát âm thanh qua Bluetooth (cần thêm mạch BT)\n- Điều chỉnh độ nhạy MIC\n- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Giá vàng, giá đô la\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "lily_LCD24inch_bt_landscape_16MB.zip",
+      "address": "0"
+    },
+    {
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều DỌC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
