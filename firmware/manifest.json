@@ -2,24 +2,6 @@
   "name": "Lựa chọn Firmware bạn muốn flash, sau đó xuống cuối trang để NẠP 😊",
   "builds": [
     {
-      "title": "AI D-Solution 1.83inch (Nguyên bản)",
-      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
-      "chipFamily": "ESP32S3",
-      "description": "- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "tely_dsolution_1.83_16MB.zip",
-      "requireKey": true,
-      "address": "0"
-    },
-    {
-      "title": "AI D-Solution 1.69inch (thay màn hình)",
-      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
-      "chipFamily": "ESP32S3",
-      "description": "- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
-      "path": "tely_dsolution_1.69_16MB.zip",
-      "requireKey": true,
-      "address": "0"
-    },
-    {
       "title": "Mạch tím + TFT 2.4inch - 2 MIC - Hiển thị chiều NGANG",
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
@@ -57,6 +39,24 @@
       "chipFamily": "ESP32S3",
       "description": "- Sóng nhạc spectrum\n- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Giá vàng, giá đô la\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_OLED_dual_mic_16MB.zip",
+      "address": "0"
+    },
+    {
+      "title": "AI D-Solution 1.83inch (Nguyên bản)",
+      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
+      "chipFamily": "ESP32S3",
+      "description": "- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "tely_dsolution_1.83_16MB.zip",
+      "requireKey": true,
+      "address": "0"
+    },
+    {
+      "title": "AI D-Solution 1.69inch (thay màn hình)",
+      "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
+      "chipFamily": "ESP32S3",
+      "description": "- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "path": "tely_dsolution_1.69_16MB.zip",
+      "requireKey": true,
       "address": "0"
     },
     {
