@@ -51,6 +51,27 @@ const Home = (props) => {
                             Danh sách FW sẽ hiện lên sau khi kết nối xong 😊<br />
                             Không cần nhấn nút BOOT hay Wake Up
                         </Alert>
+
+                        <Alert severity='success' align='left' sx={{ mt: 2, fontSize: '1.05rem' }}>
+                            <AlertTitle sx={{ fontSize: '1.2rem', fontWeight: 'bold', mb: 1.5 }}>
+                                🎉 Tính năng nổi bật
+                            </AlertTitle>
+                            <Box sx={{ 
+                                lineHeight: 2,
+                                '& strong': { 
+                                    fontWeight: 'bold',
+                                    fontSize: '1.1rem'
+                                }
+                            }}>
+                                <strong>📻 Phát RADIO</strong> các kênh VOV<br />
+                                <strong>🔊 Phát âm thanh qua BLUETOOTH</strong> (cần thêm mạch)<br />
+                                <strong>🎵 Nghe nhạc, sách nói, truyện</strong><br />
+                                <strong>🎼 Sóng nhạc spectrum</strong><br />
+                                <strong>🎙️ Điều chỉnh độ nhạy Micro</strong><br />
+                                <strong>📰 Tin tức, tỉ giá, vàng</strong><br />
+                                <strong>🔄 Cập nhật FW mới nhất</strong>
+                            </Box>
+                        </Alert>
                     </Box>
 
                     :
