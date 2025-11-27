@@ -27,11 +27,7 @@ const DonationDialog = (props) => {
                             textAlign: 'left'
                         }}
                     >
-                        🔊 Kênh hoạt động hoàn toàn phi lợi nhuận, chia sẻ phần mềm miễn phí phục vụ cộng đồng
-                        {'\n'}
-                        🚀 Mọi chi phí nghiên cứu fw, lưu trữ và duy trì web đều do mình tự chi trả
-                        {'\n'}
-                        💖 Nếu bạn yêu quý, hãy đóng góp 1 phần nhỏ để cùng mình giữ kênh tồn tại lâu dài 💖
+                        💖 Nếu thấy FW tốt, hãy DONATE mình để duy trì nhé 💖
                         {'\n\n'}
                         ➡️ BẤM OK ĐỂ TIẾP TỤC NẠP
                     </DialogContentText>
