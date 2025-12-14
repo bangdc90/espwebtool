@@ -63,7 +63,7 @@
       "chipFamily": "ESP32S3",
       "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.83_16MB.zip",
-      "requireKey": true,
+      "requireKey": false,
       "address": "0"
     },
     {
@@ -72,7 +72,7 @@
       "chipFamily": "ESP32S3",
       "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.69_16MB.zip",
-      "requireKey": true,
+      "requireKey": false,
       "address": "0"
     },
     {
