@@ -108,7 +108,7 @@ const DonateImage = () => {
                 src="/donate.jpg"
                 alt="Donate"
                 sx={{
-                    width: '220px', // Tăng kích thước lên 220px cho desktop
+                    width: '140px',
                     height: 'auto',
                     borderRadius: '4px',
                     display: 'block'

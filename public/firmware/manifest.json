@@ -1,143 +1,160 @@
 {
-  "name": "Lựa chọn Firmware bạn muốn flash, sau đó xuống cuối trang để NẠP 😊",
+  "name": "Lựa chọn Firmware bạn muốn flash",
   "builds": [
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + TFT 2.4inch - 2 MIC - Hiển thị chiều NGANG",
       "youtube": "tobe",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình ST7789V TFT 2.4 inch\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nSử dụng 2 MIC (STEREO INPUT)\nHỗ trợ màn hình ST7789V TFT 2.4 inch\nTin Tức, Đọc sách, chơi nhạc, đọc truyện, có sóng nhạc spectrum\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD2_4_dual_mic_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều NGANG",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Giá vàng, giá đô la\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nHỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\nGiá vàng, giá đô la\nTin Tức, Đọc sách, chơi nhạc, đọc truyện, có sóng nhạc spectrum\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_landscape_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + TFT 2.4inch - Hiển thị chiều DỌC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều dọc, 240x320\n- Giá vàng, giá đô la\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nHỗ trợ màn hình TFT 2.4 inch hiển thị chiều dọc, 240x320\nGiá vàng, giá đô la\nTin Tức, Đọc sách, chơi nhạc, đọc truyện, có sóng nhạc spectrum\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + TFT 2.4inch - BLUETOOTH - DỌC",
       "youtube": "https://youtu.be/Jagzr5UFmJw",
       "chipFamily": "ESP32S3",
-      "description": "- Phát âm thanh qua Bluetooth (cần thêm mạch BT)\n- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Giá vàng, giá đô la\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Phát âm thanh qua Bluetooth (cần thêm mạch BT)\nNghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nHỗ trợ màn hình TFT 2.4 inch hiển thị chiều dọc, 240x320\nGiá vàng, giá đô la\nTin Tức, Đọc sách, chơi nhạc, đọc truyện, có sóng nhạc spectrum\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_bt_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + TFT 2.4inch - BLUETOOTH - NGANG",
       "youtube": "https://youtu.be/Jagzr5UFmJw",
       "chipFamily": "ESP32S3",
-      "description": "- Phát âm thanh qua Bluetooth (cần thêm mạch BT)\n- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Hỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\n- Giá vàng, giá đô la\n- Tin Tức, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Phát âm thanh qua Bluetooth (cần thêm mạch BT)\nNghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nHỗ trợ màn hình TFT 2.4 inch hiển thị chiều ngang, 240x320\nGiá vàng, giá đô la\nTin Tức, Đọc sách, chơi nhạc, đọc truyện, có sóng nhạc spectrum\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_LCD24inch_bt_landscape_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Chatbot AI full Tiếng Việt (Mạch Tím + OLED + 1 MIC)",
       "youtube": "https://youtu.be/8bkfMLDgnlE",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Sóng nhạc spectrum\n- Điều chỉnh độ nhạy MIC\n- FW mới nhất 2.0.4\n- Hỗ trợ màn hình OLED, 128x64\n- Giá vàng, giá đô la\n- TIN TỨC, Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Full tiếng việt, Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nSóng nhạc spectrum\nĐiều chỉnh độ nhạy MIC\nFW mới nhất 2.0.4\nHỗ trợ màn hình OLED, 128x64\nGiá vàng, giá đô la\nTin Tức, Đọc sách, chơi nhạc, đọc truyện\nFull tiếng việt, Hi Lily để đánh thức",
       "path": "lily_16MB_new.zip",
       "address": "0"
-    },    
+    },
     {
+      "tab": "Xiaozhi AI",
       "title": "Mạch tím + OLED + 2 MIC",
       "youtube": "https://youtu.be/tNUqKn7NZYU?si=CMW38zrN1U2RPgZt",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Sóng nhạc spectrum\n- Sử dụng 2 MIC (STEREO INPUT)\n- Hỗ trợ màn hình OLED, 128x64\n- Giá vàng, giá đô la\n- Đọc sách, chơi nhạc, đọc truyện (Xóa Music trong MCP setting đi)\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nSóng nhạc spectrum\nSử dụng 2 MIC (STEREO INPUT)\nHỗ trợ màn hình OLED, 128x64\nGiá vàng, giá đô la\nĐọc sách, chơi nhạc, đọc truyện\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "lily_OLED_dual_mic_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "AI D-Solution 1.83inch (Nguyên bản)",
       "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nMàn hình 240x280\nGiá vàng, đô la\nĐọc tin tức\nChơi nhạc, có sóng nhạc spectrum\nĐọc Sách, truyện\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.83_16MB.zip",
       "requireKey": false,
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "AI D-Solution 1.69inch (thay màn hình)",
       "youtube": "https://www.facebook.com/share/r/17Vu1Jjojq/",
       "chipFamily": "ESP32S3",
-      "description": "- Nghe Radio các kênh VOV\n- Điều chỉnh độ nhạy MIC\n- Màn hình 240x280\n- Giá vàng, dola\n- Đọc tin tức\n- Chơi nhạc(Xóa Music trong MCP setting đi), có sóng nhạc spectrum\n- Đọc Sách, truyện\n- Hi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
+      "description": "Nghe Radio các kênh VOV\nĐiều chỉnh độ nhạy MIC\nMàn hình 240x280\nGiá vàng, đô la\nĐọc tin tức\nChơi nhạc, có sóng nhạc spectrum\nĐọc Sách, truyện\nHi Telly (tốt nhất) hoặc Hi Lily để đánh thức",
       "path": "tely_dsolution_1.69_16MB.zip",
       "requireKey": false,
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Bộ điều khiển AI trung tâm",
       "youtube": "https://youtu.be/70vwmX61oG4",
       "chipFamily": "ESP32-C3",
-      "description": "- Sử dụng kết hợp với AI xiaozhi\n- Điều khiển 7 thiết bị bằng giọng nói",
+      "description": "Sử dụng kết hợp với AI xiaozhi\nĐiều khiển 7 thiết bị bằng giọng nói",
       "path": "AI_center_4MB.zip",
       "address": "0"
     },
     {
+      "tab": "Xiaozhi AI",
       "title": "Chai nước MINECRAFT AI (Mạch Tím)",
       "youtube": "https://youtu.be/z6wGvskvApI",
       "chipFamily": "ESP32S3",
-      "description": "- Sử dụng mạch AI Xiaozhi Tím\n- Thay đổi màu sắc bằng giọng nói\n- XiaoZhi AI bot V2.0.3\n- Hi Lily để đánh thức",
+      "description": "Sử dụng mạch AI Xiaozhi Tím\nThay đổi màu sắc bằng giọng nói\nXiaoZhi AI bot V2.0.3\nHi Lily để đánh thức",
       "path": "lily_RGB_16MB.zip",
       "address": "0"
     },
     {
+      "tab": "Arduino Fun",
       "title": "Trạm hàn Chuột (MOUSE Soldering Station)",
       "youtube": "https://youtu.be/S8o4g12h2Ko",
       "chipFamily": "ESP32C3",
-      "description": "Trạm hàn chuột siêu cấp VIP PRO",
+      "description": "Trạm hàn chuột siêu cấp VIP PRO\nMàn hình hiển thị nhiệt độ, điều chỉnh bằng chuột máy tính\nESP32-C3",
       "path": "solder_station_c3.zip",
       "address": "10000"
     },
     {
+      "tab": "Arduino Fun",
       "title": "Chỉ đường Google Maps (Navigation)",
       "youtube": "https://youtu.be/1y93Rbef1E8",
       "chipFamily": "ESP32C3",
-      "description": "Navigation with google maps\n- Màn hình 240x240\n- Esp32-C3\n- App Chronos trên android (Tải trên CHPlay)",
+      "description": "Navigation với Google Maps\nMàn hình 240x240\nESP32-C3\nApp Chronos trên Android (Tải trên CHPlay)",
       "path": "navigation_c3.zip",
       "address": "10000"
     },
     {
+      "tab": "Arduino Fun",
       "title": "Mochi V2",
       "youtube": "https://youtu.be/vsYloV9RQ_I",
       "chipFamily": "ESP32C3",
-      "description": "Mochi V2 với 20 biểu cảm\n- Màn hình 240x240\n- Cảm biến gia tốc MPU6050\n- Esp32-C3",
+      "description": "Mochi V2 với 20 biểu cảm\nMàn hình 240x240\nCảm biến gia tốc MPU6050\nESP32-C3",
       "path": "fw_mochi_v2.zip",
       "address": "10000"
     },
     {
+      "tab": "Arduino Fun",
       "title": "Dasai Mochi V1 với cảm biến chạm",
       "youtube": "https://youtu.be/XIy89oY_8sA",
       "chipFamily": "ESP32C3",
-      "description": "FW cho mochi V1 với các chức năng:\n- Màn hình IPD 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
+      "description": "FW cho Mochi V1 với các chức năng:\nMàn hình IPS 0.96 inch 160x80\nESP32-C3\nNút cảm ứng thay đổi biểu cảm",
       "path": "mochi_v1.zip",
       "address": "10000"
     },
     {
-        "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
-        "youtube": "https://youtu.be/XIy89oY_8sA",
-        "chipFamily": "ESP32C3",
-        "description": "FW cho mochi V1 với các chức năng:\n- Nếu bạn bị đảo ngược màu, hãy dùng bản này để flash\n- Màn hình IPS 0.96 inch 160x80\n- Esp32-C3\n- Nút cảm ứng thay đổi biểu cảm",
-        "path": "mochi_v1_reverted_color.zip",
-        "address": "10000"
-      },
+      "tab": "Arduino Fun",
+      "title": "Dasai Mochi V1 với cảm biến chạm (Đảo màu)",
+      "youtube": "https://youtu.be/XIy89oY_8sA",
+      "chipFamily": "ESP32C3",
+      "description": "FW cho Mochi V1 - dành cho màn hình bị đảo màu:\nMàn hình IPS 0.96 inch 160x80\nESP32-C3\nNút cảm ứng thay đổi biểu cảm",
+      "path": "mochi_v1_reverted_color.zip",
+      "address": "10000"
+    },
     {
-        "title": "Hốc Trưởng",
-        "chipFamily": "ESP32C3",
-        "description": "Chơi video Hốc Trưởng:\n- Link Hướng dẫn: tiktok Mrvocsi\n- Màn hình TFT 1.77 inch 160x128\n- Esp32-C3\n- Nút cảm ứng",
-        "path": "fw_hoc_truong.zip",
-        "address": "10000",
-        "requireKey": true
-      }
+      "tab": "Arduino Fun",
+      "title": "Hốc Trưởng",
+      "chipFamily": "ESP32C3",
+      "description": "Chơi video Hốc Trưởng\nHướng dẫn: tiktok Mrvocsi\nMàn hình TFT 1.77 inch 160x128\nESP32-C3\nNút cảm ứng",
+      "path": "fw_hoc_truong.zip",
+      "address": "10000",
+      "requireKey": true
+    }
   ]
 }

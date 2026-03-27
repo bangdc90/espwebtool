@@ -15,8 +15,10 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 
 import { baudrates, saveSettings } from '../lib/settings'
+import { useConnection } from '../context/ConnectionContext'
 
 const Settings = (props) => {
+    const { connected } = useConnection()
     const [baudRate, setBaudRate] = React.useState(props.settings.baudRate)
 
     const cancel = () => {
@@ -25,32 +27,32 @@ const Settings = (props) => {
     }
 
     const reset = () => {
-        if (!props.connected) setBaudRate(115200)
+        if (!connected) setBaudRate(115200)
     }
 
     const save = () => {
         saveSettings({ baudRate: baudRate })
         props.setSettings({ baudRate: baudRate })
         props.close()
-        toast.success('Settings saved ✨', { position: 'top-center', autoClose: 3000, toastId: 'settings' })
+        toast.success('Đã lưu cài đặt', { position: 'top-center', autoClose: 3000, toastId: 'settings' })
     }
 
     return (
         <Dialog open={props.open} onClose={props.close}>
-            <DialogTitle>Settings</DialogTitle>
+            <DialogTitle>Cài đặt</DialogTitle>
 
             <DialogContent>
                 <DialogContentText>
-                    Serial Connection
+                    Kết nối Serial
                 </DialogContentText>
 
                 <FormControl variant='filled' fullWidth sx={{ mt: 1, minWidth: '10em' }}>
-                    <InputLabel>Baud Rate {props.connected && '(Requires Reconnect)'}</InputLabel>
+                    <InputLabel>Baud Rate {connected && '(Cần kết nối lại)'}</InputLabel>
                     <Select
                         value={baudRate}
                         onChange={(e) => setBaudRate(e.target.value)}
                         label='baudrate'
-                        disabled={props.connected}
+                        disabled={connected}
                     >
                         {baudrates.map(baud =>
                             <MenuItem value={baud} key={baud}>{baud} baud</MenuItem>
@@ -61,8 +63,8 @@ const Settings = (props) => {
 
             <DialogActions>
                 <Button onClick={reset} color='error'>Reset</Button>
-                <Button onClick={cancel} color='secondary'>Cancel</Button>
-                <Button onClick={save} color='primary'>Save</Button>
+                <Button onClick={cancel} color='secondary'>Hủy</Button>
+                <Button onClick={save} color='primary'>Lưu</Button>
             </DialogActions>
         </Dialog>
     )
@@ -73,7 +75,6 @@ Settings.propTypes = {
     close: PropTypes.func,
     settings: PropTypes.object,
     setSettings: PropTypes.func,
-    connected: PropTypes.bool,
 }
 
 export default Settings

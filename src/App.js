@@ -1,371 +1,225 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+import { ThemeProvider, CssBaseline } from '@mui/material'
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
+import theme from './theme'
+import { ConnectionProvider, useConnection } from './context/ConnectionContext'
+
 import Header from './components/Header'
-import Home from './components/Home'
-import PreBuiltFirmware from './components/PreBuiltFirmware'
+import FirmwareGrid from './components/FirmwareGrid'
 import Output from './components/Output'
-import Buttons from './components/Buttons'
 import Settings from './components/Settings'
 import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 import DonateImage from './components/DonateImage'
-import BuyKeyDialog from './components/BuyKeyDialog'
-import DonationDialog from './components/DonationDialog'
+import AffiliateCarousel from './components/AffiliateCarousel'
+import WelcomeDialog from './components/WelcomeDialog'
 
-import { connectESP, supported } from './lib/esp'
+import PropTypes from 'prop-types'
 import { loadSettings, defaultSettings } from './lib/settings'
 
-const App = () => {
-  const [connected, setConnected] = React.useState(false) // Connection status
-  const [connecting, setConnecting] = React.useState(false)
-  const [output, setOutput] = React.useState({ time: new Date(), value: 'Click Connect to start\n' }) // Serial output
-  const [espStub, setEspStub] = React.useState(undefined) // ESP flasher stuff
-  const [uploads, setUploads] = React.useState([]) // Uploaded Files
-  const [settingsOpen, setSettingsOpen] = React.useState(false) // Settings Window
-  const [settings, setSettings] = React.useState({...defaultSettings}) // Settings
-  const [confirmProgram, setConfirmProgram] = React.useState(false) // Confirm Flash Window
-  const [flashing, setFlashing] = React.useState(false) // Enable/Disable buttons
-  const [chipName, setChipName] = React.useState('') // ESP8266 or ESP32
-  const [selectedFirmwareInfo, setSelectedFirmwareInfo] = React.useState(null) // Selected firmware info
-  const [keyActivated, setKeyActivated] = React.useState(false) // Key activation status
-  const [buyKeyDialogOpen, setBuyKeyDialogOpen] = React.useState(false) // Buy key dialog
-  const [donationDialogOpen, setDonationDialogOpen] = React.useState(false) // Donation dialog for free firmware
+// ─── Inner UI — rendered inside ConnectionProvider so it can call useConnection ─────
+const FlashUI = ({ settings, setSettings, output, addOutput }) => {
+  const { espStub } = useConnection()
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
+  const [confirmProgram, setConfirmProgram] = React.useState(false)
+  const [flashing, setFlashing] = React.useState(false)
+  const [pendingFlash, setPendingFlash] = React.useState(null)
 
-  useEffect(() => {
-    setSettings(loadSettings())
-  }, [])
-
-  // Add new message to output
-  const addOutput = (msg) => {
-    setOutput({
-      time: new Date(),
-      value: `${msg}\n`,
-    })
-  }
-
-  // Connect to ESP & init flasher stuff
-  const clickConnect = async () => {
-    if (espStub) {
-      await espStub.transport.disconnect()
-      setEspStub(undefined)
-      return
-    }
-
-    const esploader = await connectESP({
-      log: (...args) => addOutput(`${args[0]}`),
-      debug: (...args) => console.debug(...args),
-      error: (...args) => console.error(...args),
-      baudRate: parseInt(settings.baudRate),
-    })
-
-    try {
-      toast.info('Đang kết nối...', { 
-        position: 'top-center', 
-        autoClose: false, 
-        toastId: 'connecting' 
-      })
-      toast.update('connecting', {
-        render: 'Đang kết nối...',
-        type: toast.TYPE.INFO,
-        autoClose: false
-      })
-
-      setConnecting(true)
-
-      // Connect and detect chip (esptool-js API)
-      await esploader.main()
-
-      addOutput(`Connected to ${esploader.chip.CHIP_NAME}`)
-      addOutput(`MAC Address: (Reading MAC address from chip...)`)
-
-      // NOTE: Do NOT call runStub() before writeFlash()
-      // runStub() loads stub into RAM which may conflict with firmware addresses
-      // writeFlash() will handle everything automatically
-
-      setConnected(true)
-      toast.update('connecting', {
-        render: 'Kết nối thành công 🚀',
-        type: toast.TYPE.SUCCESS,
-        autoClose: 3000
-      })
-
-      // Listen for disconnect on transport device
-      esploader.transport.device.addEventListener('disconnect', () => {
-        setConnected(false)
-        setEspStub(undefined)
-        toast.warning('Đã ngắt kết nối 💔', { position: 'top-center', autoClose: 3000, toastId: 'settings' })
-        addOutput(`------------------------------------------------------------`)
-      })
-
-      setEspStub(esploader)
-      setChipName(esploader.chip.CHIP_NAME)
-    } catch (err) {
-      const shortErrMsg = `${err}`.replace('Error: ','')
-
-      toast.update('connecting', {
-        render: shortErrMsg,
-        type: toast.TYPE.ERROR,
-        autoClose: 3000
-      })
-
-      addOutput(`${err}`)
-
-      await esploader.port.close()
-      await esploader.disconnect()
-    } finally {
-      setConnecting(false)
-    }
-  }
-
-  // Handle program button click - show donation dialog for free firmware first
-  const handleProgramClick = () => {
-    // Check if firmware requires key (paid firmware)
-    const needsKey = selectedFirmwareInfo?.requireKey === true
-    
-    if (needsKey && !keyActivated) {
-      // Firmware needs key but not activated yet - show buy key dialog
-      setBuyKeyDialogOpen(true)
-      return
-    }
-    
-    if (!needsKey) {
-      // Free firmware - Show donation dialog first
-      setDonationDialogOpen(true)
-    } else {
-      // Paid firmware with key activated - go directly to confirm dialog
-      setConfirmProgram(true)
-    }
-  }
-
-  // Handle donation dialog OK - proceed to confirm dialog
-  const handleDonationOk = () => {
-    setDonationDialogOpen(false)
+  const handleStartFlash = (firmware, uploads) => {
+    setPendingFlash({ firmware, uploads })
     setConfirmProgram(true)
   }
 
-  // Enable test mode - bypass connection
-  const enableTestMode = () => {
-    setConnected(true)
-    setChipName('ESP32 (Test Mode)')
-    addOutput('Test Mode Enabled - No device connected')
-    addOutput('You can test the UI without a real device')
-    toast.info('Chế độ Test đã bật 🧪', { position: 'top-center', autoClose: 3000 })
-  }
-
-  // Flash Firmware
   const program = async () => {
+    if (!pendingFlash) return
     setConfirmProgram(false)
     setFlashing(true)
+    const { uploads } = pendingFlash
 
-    const toBinaryString = (inputFile) => {
+    const toBinaryString = (file) => {
       const reader = new FileReader()
-
       return new Promise((resolve, reject) => {
-        reader.onerror = () => {
-          reader.abort();
-          reject(new DOMException('Problem parsing input file.'));
-        }
-
-        reader.onload = () => {
-          resolve(reader.result);
-        }
-        // esptool-js requires binary string, not ArrayBuffer
-        reader.readAsBinaryString(inputFile)
+        reader.onerror = () => { reader.abort(); reject(new DOMException('Problem parsing input file.')) }
+        reader.onload = () => resolve(reader.result)
+        reader.readAsBinaryString(file)
       })
     }
 
-    // Prepare file array for esptool-js writeFlash API
     const fileArray = []
-    
-    for (let i = 0; i < uploads.length; i++) {
-      const file = uploads[i]
+    for (const file of uploads) {
       if (!file.fileName || !file.obj) continue
-      
       const contents = await toBinaryString(file.obj)
-      const fileDesc = file.firmwareInfo?.title || file.fileName
-      
-      fileArray.push({
-        data: contents,
-        address: parseInt(file.offset, 16)
-      })
-      
-      addOutput(`Prepared ${fileDesc} at address 0x${file.offset} (${contents.length} bytes)`)
+      fileArray.push({ data: contents, address: parseInt(file.offset, 16) })
+      addOutput(`Prepared ${file.fileName} at 0x${file.offset} (${contents.length} bytes)`)
     }
 
     if (fileArray.length === 0) {
-      addOutput(`Please add firmware files`)
-      toast.info('Vui lòng chọn file firmware', { position: 'top-center', toastId: 'uploaded', autoClose: 3000 })
+      addOutput('No firmware files.')
+      toast.info('Không có file firmware', { position: 'top-center', autoClose: 3000 })
+      setFlashing(false)
+      return
+    }
+
+    if (!espStub) {
+      addOutput('Mất kết nối ESP32. Vui lòng kết nối lại.')
+      toast.error('Mất kết nối ESP32', { position: 'top-center', autoClose: 3000 })
       setFlashing(false)
       return
     }
 
     try {
-      addOutput(`Starting flash process...`)
+      addOutput('Starting flash...')
       toast.info('Đang nạp chương trình...', { position: 'top-center', autoClose: false, toastId: 'flashing' })
 
-      // Use writeFlash from esptool-js
       await espStub.writeFlash({
-        fileArray: fileArray,
+        fileArray,
         flashSize: 'keep',
         flashMode: 'keep',
         flashFreq: 'keep',
         eraseAll: false,
         compress: true,
         reportProgress: (fileIndex, written, total) => {
-          const progress = (written / total)
-          const percentage = Math.floor(progress * 100)
-          const fileDesc = uploads[fileIndex]?.firmwareInfo?.title || uploads[fileIndex]?.fileName || `File ${fileIndex + 1}`
-          
-          if (percentage >= 100) {
-            // When reached 100%, show verifying message
-            toast.update('flashing', { 
-              render: `Đang xác minh và hoàn tất... Vui lòng chờ`,
-              progress: 0.99 // Keep progress bar visible
-            })
-            addOutput(`Flashing ${fileDesc}... 100% - Verifying...`)
+          const progress = written / total
+          const pct = Math.floor(progress * 100)
+          const desc =
+            uploads[fileIndex]?.firmwareInfo?.title ||
+            uploads[fileIndex]?.fileName ||
+            `File ${fileIndex + 1}`
+          if (pct >= 100) {
+            toast.update('flashing', { render: 'Đang xác minh... Vui lòng chờ', progress: 0.99 })
+            addOutput(`Flashing ${desc}... 100% - Verifying...`)
           } else {
-            toast.update('flashing', { 
-              render: `Flashing ${fileDesc}... ${percentage}%`,
-              progress: progress 
-            })
-            addOutput(`Flashing ${fileDesc}... ${percentage}%`)
+            toast.update('flashing', { render: `Flashing ${desc}... ${pct}%`, progress })
+            addOutput(`Flashing ${desc}... ${pct}%`)
           }
-        }
+        },
       })
 
-      addOutput(`All files flashed successfully!`)
-      addOutput(`To run the new firmware please reset your device.`)
-
-      // Dismiss the progress toast and show success toast
+      addOutput('All files flashed successfully!')
+      addOutput('Reset thiết bị để chạy chương trình mới.')
       toast.dismiss('flashing')
-      toast.success('Hoàn tất! Reset thiết bị để chạy chương trình mới 🎉', { 
-        position: 'top-center', 
-        autoClose: 5000,
-        toastId: 'flash-complete'
+      toast.success('Hoàn tất! Reset thiết bị để chạy chương trình mới', {
+        position: 'top-center',
+        autoClose: 6000,
+        toastId: 'flash-complete',
       })
     } catch (e) {
-      addOutput(`ERROR flashing firmware!`)
-      addOutput(`${e}`)
+      addOutput(`ERROR: ${e}`)
       console.error(e)
-      
-      // Dismiss progress toast and show error
       toast.dismiss('flashing')
-      toast.error(`Lỗi nạp chương trình: ${e.message || e}`, {
+      toast.error(`Lỗi nạp: ${e.message || e}`, {
         position: 'top-center',
         autoClose: 5000,
-        toastId: 'flash-error'
+        toastId: 'flash-error',
       })
     }
 
     setFlashing(false)
+    setPendingFlash(null)
   }
 
   return (
-    <Box sx={{ minWidth: '25rem' }}>
-      <Header sx={{ mb: '1rem' }} />
-      
-      {/* Donate Image - Fixed position at top right */}
+    <Box sx={{ minWidth: '320px', minHeight: '100vh' }}>
+      <Header onOpenSettings={() => setSettingsOpen(true)} flashing={flashing} />
       <DonateImage />
 
-      <Grid container spacing={1} direction='column' justifyContent='space-around' alignItems='center' sx={{ minHeight: 'calc(100vh - 116px)' }}>
+      {/* Hero banner */}
+      <Box
+        sx={{
+          textAlign: 'center',
+          py: { xs: 4, md: 6 },
+          px: 2,
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            fontWeight: 700,
+            color: '#f5f5f7',
+            mb: 1,
+            fontSize: { xs: '1.5rem', sm: '2rem', md: '2.4rem' },
+            letterSpacing: '-0.02em',
+          }}
+        >
+          Vọc, Vọc nữa, Vọc mãi
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary', maxWidth: 560, mx: 'auto' }}>
+          Chọn đúng FW với chip ESP32 của bạn (ESP32C3, ESP32S3 hoặc ESP32 thường)
+        </Typography>
+      </Box>
 
-        {/* Home Page */}
-        {!connected && !connecting &&
-          <Grid item>
-            <Home
-              connect={clickConnect}
-              supported={supported}
-              openSettings={() => setSettingsOpen(true)}
-              testMode={enableTestMode}
-            />
-          </Grid>
-        }
+      {/* Firmware grid — always visible, no connect required */}
+      <Box sx={{ mt: 2 }}>
+        <FirmwareGrid onStartFlash={handleStartFlash} />
+      </Box>
 
-        {/* Home Page */}
-        {!connected && connecting &&
-          <Grid item>
-            <Typography variant='h3' component='h2' sx={{ color: '#aaa' }}>
-              Connecting...
-            </Typography>
-          </Grid>
-        }
+      {/* Output log */}
+      <Box sx={{ px: { xs: 2, md: 4 }, pb: 2 }}>
+        <Output received={output} />
+      </Box>
 
-        {/* Pre-built Firmware Page */}
-        {connected &&
-          <Grid item>
-            <PreBuiltFirmware
-              setUploads={setUploads}
-              chipName={chipName}
-              setSelectedFirmwareInfo={setSelectedFirmwareInfo}
-              setKeyActivated={setKeyActivated}
-            />
-          </Grid>
-        }
-
-        {/* Program Button */}
-        {connected &&
-          <Grid item>
-            <Buttons
-              program={handleProgramClick}
-              disabled={flashing}
-              selectedFirmware={selectedFirmwareInfo}
-              keyActivated={keyActivated}
-              onBuyKey={() => setBuyKeyDialogOpen(true)}
-            />
-          </Grid>
-        }
-
-        {/* Serial Output */}
-        {supported() &&
-          <Grid item>
-            <Output received={output} />
-          </Grid>
-        }
-      </Grid>
-
-      {/* Settings Window */}
       <Settings
         open={settingsOpen}
         close={() => setSettingsOpen(false)}
         setSettings={setSettings}
         settings={settings}
-        connected={connected}
       />
 
-      {/* Confirm Flash/Program Window */}
       <ConfirmWindow
         open={confirmProgram}
-        text={'Nạp chương trình mới sẽ ghi đè lên chương trình hiện tại.'}
+        text="Nạp chương trình mới sẽ ghi đè lên chương trình hiện tại."
         onOk={program}
         onCancel={() => setConfirmProgram(false)}
       />
 
-      {/* Donation Dialog for Free Firmware */}
-      <DonationDialog
-        open={donationDialogOpen}
-        onOk={handleDonationOk}
-        onClose={() => setDonationDialogOpen(false)}
-      />
-
-      {/* Buy Key Dialog */}
-      <BuyKeyDialog
-        open={buyKeyDialogOpen}
-        onClose={() => setBuyKeyDialogOpen(false)}
-      />
-
-      {/* Toaster */}
-      <ToastContainer />
-
-      {/* Footer */}
-      <Footer sx={{ mt: 'auto' }} />
+      <ToastContainer theme="dark" />
+      <WelcomeDialog />
+      <AffiliateCarousel />
+      <Footer sx={{ mt: 2, pb: 2, textAlign: 'center' }} />
     </Box>
+  )
+}
+
+FlashUI.propTypes = {
+  settings: PropTypes.object.isRequired,
+  setSettings: PropTypes.func.isRequired,
+  output: PropTypes.object.isRequired,
+  addOutput: PropTypes.func.isRequired,
+}
+
+// ─── Root component — holds shared state, wraps in providers ─────────────────────
+const App = () => {
+  const [settings, setSettings] = React.useState({ ...defaultSettings })
+  const [output, setOutput] = React.useState({ time: new Date(), value: 'Ready.\n' })
+
+  useEffect(() => {
+    setSettings(loadSettings())
+  }, [])
+
+  const addOutput = useCallback((msg) => {
+    setOutput({ time: new Date(), value: `${msg}\n` })
+  }, [])
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ConnectionProvider settings={settings} onAddOutput={addOutput}>
+        <FlashUI
+          settings={settings}
+          setSettings={setSettings}
+          output={output}
+          addOutput={addOutput}
+        />
+      </ConnectionProvider>
+    </ThemeProvider>
   )
 }
 

@@ -179,4 +179,51 @@
           url('./fonts/roboto-v27-latin/roboto-v27-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
           url('./fonts/roboto-v27-latin/roboto-v27-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
    }
-   
+
+/* ─── Global dark theme base ───────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #000000;
+  color: #f5f5f7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.28);
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(0,113,227,0.35);
+  color: #fff;
+}
+
+/* Toastify dark overrides to match theme */
+.Toastify__toast-container {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.Toastify__toast--dark {
+  background: #1d1d1f;
+  border: 1px solid rgba(255,255,255,0.08);
+}
