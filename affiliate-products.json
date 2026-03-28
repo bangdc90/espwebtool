@@ -1,20 +1,138 @@
 [
   {
-    "id": 1,
-    "url": "https://s.shopee.vn/3fu9BcJAkG",
-    "title": "Mạch Xiaozhi AI ESP32-S3-N16R8 đầy đủ",
-    "image": "https://down-vn.img.susercontent.com/file/cn-11134207-820l4-mg40bja0dlvs7c_tn"
+    "category": "tools",
+    "label": "Dụng cụ",
+    "labelEn": "Tool",
+    "products": [
+      {
+        "id": 101,
+        "url": "https://s.shopee.vn/20r4He21HO",
+        "title": "Máy vặn vít pin Bosch Go 3",
+        "image": "https://down-vn.img.susercontent.com/file/sg-11134201-8260k-mmawfpifkohxe6.webp"
+      },
+      {
+        "id": 102,
+        "url": "https://s.shopee.vn/9ztLoiy5dS",
+        "title": "Đồng hồ vạn năng UNI-T",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mh1f9ny71modd2.webp"
+      },
+      {
+        "id": 103,
+        "url": "https://s.shopee.vn/1LbNULxzbi",
+        "title": "Mỏ hàn thiếc Deli Chất Lượng Cao -60-90W điều chỉnh nhiệt độ",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m9fyraxxjcckbb.webp"
+      },
+      {
+        "id": 104,
+        "url": "https://s.shopee.vn/5q3mqfOKGB",
+        "title": " Máy khoan điện mini",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m7lvkllf5dvn0c.webp"
+      },
+      {
+        "id": 105,
+        "url": "https://s.shopee.vn/W2GUqRZX8",
+        "title": "Thiếc Hàn/Chì Hàn SN63 Xịn Bóng Nhẹ Nhiệt Dễ Hàn",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m8fpuj7kwpqc51.webp"
+      },
+      {
+        "id": 106,
+        "url": "https://s.shopee.vn/30fth0kMEB",
+        "title": "Mỡ hàn chống oxi hóa, tẩy gỉ sét, tăng độ bám dính của thiếc hàn",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m0fawdej3759e5.webp"
+      },
+      {
+        "id": 107,
+        "url": "https://s.shopee.vn/50UbRz4J96",
+        "title": "Sản xuất mạch PCB giá rẻ, chất lượng cao",
+        "image": "https://down-vn.img.susercontent.com/file/sg-11134201-7rat2-mayb0wfdle1u86.webp"
+      },
+      {
+        "id": 108,
+        "url": "https://s.shopee.vn/2LTGjJiaBb",
+        "title": "Cảm Biến Áp Suất Lốp Ô Tô Hình LED Cao Cấp",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mj3vl6636kg6b0.webp"
+      },
+      {
+        "id": 109,
+        "url": "https://s.shopee.vn/8KjGrUGY5I",
+        "title": "APTOMAT Wifi, Cầu Dao Thông Minh TUYA/Smart Life",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mibu08lepo1y7a.webp"
+      }
+    ]
   },
   {
-    "id": 2,
-    "url": "https://s.shopee.vn/50UbRz4J96",
-    "title": "Sản xuất mạch PCB giá rẻ, chất lượng cao",
-    "image": "https://down-vn.img.susercontent.com/file/sg-11134201-7rat2-mayb0wfdle1u86.webp"
+    "category": "modules",
+    "label": "Mạch",
+    "labelEn": "Module",
+    "products": [
+      {
+        "id": 201,
+        "url": "https://s.shopee.vn/3fu9BcJAkG",
+        "title": "Mạch Xiaozhi AI ESP32-S3-N16R8 đầy đủ",
+        "image": "https://down-vn.img.susercontent.com/file/cn-11134207-820l4-mg40bja0dlvs7c_tn"
+      },
+      {
+        "id": 202,
+        "url": "https://s.shopee.vn/3fzIH6U7Ao",
+        "title": "Module Hạ Áp 5V - 30V Xuống 5V 3A",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mjf0irbugr9cd9.webp"
+      },
+      {
+        "id": 203,
+        "url": "https://s.shopee.vn/3LMIc5QifY",
+        "title": "ESP32 dev kit",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m12svcbpaviza5.webp"
+      },
+      {
+        "id": 204,
+        "url": "https://s.shopee.vn/AACckfZZIK",
+        "title": "Cảm biến gia tốc góc MPU6050",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134201-7qukw-lj8czx17phqk0d.webp"
+      },
+      {
+        "id": 205,
+        "url": "https://s.shopee.vn/9KbZkpDvn8",
+        "title": "Chatbot AI Xiaozhi 2 microphone",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mipqz2d1ea6f08.webp"
+      },
+      {
+        "id": 206,
+        "url": "https://s.shopee.vn/3Az40EhP6h",
+        "title": "Bộ điều khiển thiết bị từ xa",
+        "image": "https://down-vn.img.susercontent.com/file/sg-11134201-7repx-m264u79i2sjc0f.webp"
+      }
+    ]
   },
   {
-    "id": 3,
-    "url": "https://s.shopee.vn/9ztGsuoQs6",
-    "title": "Kích Điện Cao Áp, Vào 3V7-6V ra 400KV 1000KV",
-    "image": "https://down-vn.img.susercontent.com/file/sg-11134201-7rfh6-m9v5jps2hjrw7c@resize_w900_nl.webp"
+    "category": "parts",
+    "label": "Linh kiện",
+    "labelEn": "Electronic Part",
+    "products": [
+      {
+        "id": 301,
+        "url": "https://s.shopee.vn/7KsRNU8DZ8",
+        "title": "Hộp điện 11x11x5cm",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc3cwhjxb9m282.webp"
+      },
+      {
+        "id": 302,
+        "url": "https://s.shopee.vn/5fkDUJixzO",
+        "title": "Pin Li-ion 18650 loại tốt",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mlhocbqodh5b6c.webp"
+      },
+      {
+        "id": 303,
+        "url": "https://s.shopee.vn/8fNoyBkvI0",
+        "title": "Động cơ máy photo Nidec 24H404H070",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-looyxq83mngw74.webp"
+      },
+      {
+        "id": 304,
+        "url": "https://s.shopee.vn/9UtIgO72GL",
+        "title": "Pin 2000mah 3.7V có bảo vệ",
+        "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mcugy7wdyba437@resize_w900_nl.webp"
+      }
+
+    ]
   }
 ]
