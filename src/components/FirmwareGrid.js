@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
@@ -12,7 +13,8 @@ import TabBar from './TabBar'
 import FirmwareCard from './FirmwareCard'
 import FirmwareModal from './FirmwareModal'
 
-const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange }) => {
+const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileDefaultTabId = null }) => {
+  const isMobile = useMediaQuery('(max-width:599px)')
   const [firmwareList, setFirmwareList] = useState([])
   const [manifestLoaded, setManifestLoaded] = useState(false)
   const [manifestError, setManifestError] = useState(false)
@@ -72,7 +74,7 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange }) => {
         tabs.push(tabId)
       }
     })
-    setActiveTab(tabs[0] || null)
+    setActiveTab(isMobile && mobileDefaultTabId ? mobileDefaultTabId : (tabs[0] || null))
   }
 
   // Firmware-only tabs (derived from manifest)
@@ -89,8 +91,18 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange }) => {
     return result
   }, [firmwareList])
 
-  // All tabs: firmware + extra (e.g. Shopping)
-  const tabs = React.useMemo(() => [...fwTabs, ...extraTabs], [fwTabs, extraTabs])
+  // All tabs: firmware + extra. On mobile, mobileDefaultTabId tab moves to front.
+  const tabs = React.useMemo(() => {
+    const all = [...fwTabs, ...extraTabs]
+    if (isMobile && mobileDefaultTabId) {
+      const idx = all.findIndex((t) => t.id === mobileDefaultTabId)
+      if (idx > 0) {
+        const [tab] = all.splice(idx, 1)
+        all.unshift(tab)
+      }
+    }
+    return all
+  }, [fwTabs, extraTabs, isMobile, mobileDefaultTabId])
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
@@ -281,6 +293,7 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange }) => {
 }
 
 FirmwareGrid.propTypes = {
+  mobileDefaultTabId: PropTypes.string,
   onStartFlash: PropTypes.func.isRequired,
   extraTabs: PropTypes.array,
   onActiveTabChange: PropTypes.func,
