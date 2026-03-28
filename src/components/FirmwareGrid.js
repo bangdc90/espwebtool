@@ -12,7 +12,7 @@ import TabBar from './TabBar'
 import FirmwareCard from './FirmwareCard'
 import FirmwareModal from './FirmwareModal'
 
-const FirmwareGrid = ({ onStartFlash }) => {
+const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange }) => {
   const [firmwareList, setFirmwareList] = useState([])
   const [manifestLoaded, setManifestLoaded] = useState(false)
   const [manifestError, setManifestError] = useState(false)
@@ -75,8 +75,8 @@ const FirmwareGrid = ({ onStartFlash }) => {
     setActiveTab(tabs[0] || null)
   }
 
-  // Derive tab list from loaded firmware
-  const tabs = React.useMemo(() => {
+  // Firmware-only tabs (derived from manifest)
+  const fwTabs = React.useMemo(() => {
     const seen = new Set()
     const result = []
     firmwareList.forEach((b) => {
@@ -89,10 +89,21 @@ const FirmwareGrid = ({ onStartFlash }) => {
     return result
   }, [firmwareList])
 
+  // All tabs: firmware + extra (e.g. Shopping)
+  const tabs = React.useMemo(() => [...fwTabs, ...extraTabs], [fwTabs, extraTabs])
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId)
+    if (onActiveTabChange) onActiveTabChange(tabId)
+  }
+
   const filteredList = React.useMemo(
     () => firmwareList.filter((b) => (b.tab || 'Other') === activeTab),
     [firmwareList, activeTab]
   )
+
+  // Find active extra tab (if any)
+  const activeExtraTab = extraTabs.find((t) => t.id === activeTab)
 
   const loadFirmware = async (firmware) => {
     if (loadingRef.current) return
@@ -210,45 +221,52 @@ const FirmwareGrid = ({ onStartFlash }) => {
 
   return (
     <Box>
-      {/* Tab navigation */}
+      {/* Unified tab navigation — sticky just below header */}
       {tabs.length > 1 && (
-        <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+        <TabBar tabs={tabs} activeTab={activeTab} onChange={handleTabChange} stickyTop={64} />
       )}
 
-      {/* Tab label + count */}
-      <Box sx={{ px: { xs: 2, md: 4 }, mb: 2, display: 'flex', alignItems: 'baseline', gap: 1 }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontFamily: '"Roboto Mono", monospace',
-            color: 'primary.main',
-            fontWeight: 700,
-          }}
-        >
-          {activeTab}
-        </Typography>
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {filteredList.length} firmware
-        </Typography>
-      </Box>
-
-      {/* Cards grid */}
-      <Box sx={{ px: { xs: 2, md: 4 }, pb: 4 }}>
-        <Grid container spacing={2}>
-          {filteredList.map((fw, idx) => (
-            <Grid
-              item
-              key={`${fw.path}-${idx}`}
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
+      {/* Extra tab content (e.g. Shopping) */}
+      {activeExtraTab ? (
+        activeExtraTab.content
+      ) : (
+        <>
+          {/* Tab label + count */}
+          <Box sx={{ px: { xs: 2, md: 4 }, mb: 2, display: 'flex', alignItems: 'baseline', gap: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: '"Roboto Mono", monospace',
+                color: 'primary.main',
+                fontWeight: 700,
+              }}
             >
-              <FirmwareCard firmware={fw} onClick={() => handleCardClick(fw)} />
+              {activeTab}
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {filteredList.length} firmware
+            </Typography>
+          </Box>
+
+          {/* Cards grid */}
+          <Box sx={{ px: { xs: 2, md: 4 }, pb: 4 }}>
+            <Grid container spacing={2}>
+              {filteredList.map((fw, idx) => (
+                <Grid
+                  item
+                  key={`${fw.path}-${idx}`}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                >
+                  <FirmwareCard firmware={fw} onClick={() => handleCardClick(fw)} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Box>
+          </Box>
+        </>
+      )}
 
       {/* Firmware detail modal */}
       <FirmwareModal
@@ -264,6 +282,8 @@ const FirmwareGrid = ({ onStartFlash }) => {
 
 FirmwareGrid.propTypes = {
   onStartFlash: PropTypes.func.isRequired,
+  extraTabs: PropTypes.array,
+  onActiveTabChange: PropTypes.func,
 }
 
 export default FirmwareGrid

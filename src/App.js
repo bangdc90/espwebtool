@@ -17,15 +17,43 @@ import Settings from './components/Settings'
 import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 import DonateImage from './components/DonateImage'
-import AffiliateCarousel from './components/AffiliateCarousel'
+import ShoppingTab from './components/ShoppingTab'
 import WelcomeDialog from './components/WelcomeDialog'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 
 import PropTypes from 'prop-types'
 import { loadSettings, defaultSettings } from './lib/settings'
 
+// ─── Extra tabs appended to the firmware tab bar ─────────────────────────────────
+const EXTRA_TABS = [
+  {
+    id: 'shopping',
+    label: 'Mua sắm',
+    icon: <ShoppingCartIcon sx={{ fontSize: 16 }} />,
+    tabSx: {
+      background: 'linear-gradient(135deg, #E65100 0%, #FF8F00 100%)',
+      color: '#fff',
+      borderRadius: '6px 6px 0 0',
+      fontWeight: 600,
+      mx: 0.5,
+      minHeight: 48,
+      '&.Mui-selected': {
+        color: '#fff',
+        background: 'linear-gradient(135deg, #BF360C 0%, #E65100 100%)',
+      },
+      '&:hover': {
+        background: 'linear-gradient(135deg, #F4511E 0%, #FFA000 100%)',
+        opacity: 1,
+      },
+    },
+    content: <ShoppingTab />,
+  },
+]
+
 // ─── Inner UI — rendered inside ConnectionProvider so it can call useConnection ─────
 const FlashUI = ({ settings, setSettings, output, addOutput }) => {
   const { espStub } = useConnection()
+  const [shoppingActive, setShoppingActive] = React.useState(false)
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [confirmProgram, setConfirmProgram] = React.useState(false)
   const [flashing, setFlashing] = React.useState(false)
@@ -133,7 +161,7 @@ const FlashUI = ({ settings, setSettings, output, addOutput }) => {
       <Box
         sx={{
           textAlign: 'center',
-          py: { xs: 4, md: 6 },
+          py: { xs: 1.5, md: 2.5 },
           px: 2,
           borderBottom: '1px solid rgba(255,255,255,0.07)',
         }}
@@ -156,15 +184,21 @@ const FlashUI = ({ settings, setSettings, output, addOutput }) => {
         </Typography>
       </Box>
 
-      {/* Firmware grid — always visible, no connect required */}
-      <Box sx={{ mt: 2 }}>
-        <FirmwareGrid onStartFlash={handleStartFlash} />
+      {/* Firmware grid with Shopping tab appended */}
+      <Box sx={{ mt: 1 }}>
+        <FirmwareGrid
+          onStartFlash={handleStartFlash}
+          extraTabs={EXTRA_TABS}
+          onActiveTabChange={(tabId) => setShoppingActive(tabId === 'shopping')}
+        />
       </Box>
 
-      {/* Output log */}
-      <Box sx={{ px: { xs: 2, md: 4 }, pb: 2 }}>
-        <Output received={output} />
-      </Box>
+      {/* Output log — hide when shopping tab is active */}
+      {!shoppingActive && (
+        <Box sx={{ px: { xs: 2, md: 4 }, pb: 2 }}>
+          <Output received={output} />
+        </Box>
+      )}
 
       <Settings
         open={settingsOpen}
@@ -182,7 +216,6 @@ const FlashUI = ({ settings, setSettings, output, addOutput }) => {
 
       <ToastContainer theme="dark" />
       <WelcomeDialog />
-      <AffiliateCarousel />
       <Footer sx={{ mt: 2, pb: 2, textAlign: 'center' }} />
     </Box>
   )

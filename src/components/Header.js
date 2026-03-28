@@ -14,8 +14,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import UsbIcon from '@mui/icons-material/Usb';
 import UsbOffIcon from '@mui/icons-material/UsbOff';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import FacebookIcon from '@mui/icons-material/Facebook';
 
 import { useConnection } from '../context/ConnectionContext';
+import avatarImg from '../icons/avatar.jpg';
 
 const Header = ({ onOpenSettings, flashing }) => {
     const { connected, connecting, chipName, connect, supported } = useConnection();
@@ -70,20 +73,96 @@ const Header = ({ onOpenSettings, flashing }) => {
     return (
         <AppBar position="sticky" elevation={0}>
             <Toolbar sx={{ gap: 1, minHeight: { xs: 56, sm: 64 } }}>
-                {/* Logo */}
-                <Typography
-                    variant="h6"
-                    component="h1"
-                    noWrap
-                    sx={{
-                        fontWeight: 700,
-                        letterSpacing: '-0.01em',
-                        color: '#f5f5f7',
-                        flexShrink: 0,
-                    }}
-                >
-                    Mr Vọc Sĩ
-                </Typography>
+                {/* Circular avatar + Logo + Social links — all same baseline */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+                    <Box
+                        component="img"
+                        src={avatarImg}
+                        alt="Mr Vọc Sĩ"
+                        sx={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            border: '2px solid rgba(255,255,255,0.15)',
+                        }}
+                    />
+                    <Typography
+                        variant="h6"
+                        component="h1"
+                        noWrap
+                        sx={{
+                            fontWeight: 700,
+                            letterSpacing: '-0.01em',
+                            color: '#f5f5f7',
+                        }}
+                    >
+                        Mr Vọc Sĩ
+                    </Typography>
+
+                    {/* Divider */}
+                    <Box sx={{ width: '1px', height: 20, background: 'rgba(255,255,255,0.15)', mx: 0.5 }} />
+
+                    {/* Facebook */}
+                    <Box
+                        component="a"
+                        href="https://www.facebook.com/mrvocsi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                            color: 'rgba(255,255,255,0.5)',
+                            textDecoration: 'none',
+                            transition: 'color 0.2s',
+                            '&:hover': { color: '#1877F2' },
+                        }}
+                    >
+                        <FacebookIcon sx={{ fontSize: '1.25rem' }} />
+                        <Box
+                            component="span"
+                            sx={{
+                                display: { xs: 'none', sm: 'inline' },
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                letterSpacing: '-0.01em',
+                            }}
+                        >
+                            Fanpage
+                        </Box>
+                    </Box>
+
+                    {/* YouTube */}
+                    <Box
+                        component="a"
+                        href="http://youtube.com/@mrvocsi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 0.5,
+                            color: 'rgba(255,255,255,0.5)',
+                            textDecoration: 'none',
+                            transition: 'color 0.2s',
+                            '&:hover': { color: '#FF0000' },
+                        }}
+                    >
+                        <YouTubeIcon sx={{ fontSize: '1.25rem' }} />
+                        <Box
+                            component="span"
+                            sx={{
+                                display: { xs: 'none', sm: 'inline' },
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                letterSpacing: '-0.01em',
+                            }}
+                        >
+                            YouTube
+                        </Box>
+                    </Box>
+                </Box>
 
                 <Box sx={{ flexGrow: 1 }} />
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardActionArea from '@mui/material/CardActionArea'
@@ -7,6 +7,15 @@ import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import YouTubeIcon from '@mui/icons-material/YouTube'
 import PropTypes from 'prop-types'
+
+// Extract YouTube video ID and build thumbnail URL
+const getYtThumbnail = (url) => {
+  if (!url || url === 'tobe') return null
+  const m =
+    url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/) ||
+    url.match(/youtube\.com\/(?:watch\?v=|shorts\/|embed\/)([a-zA-Z0-9_-]{11})/)
+  return m ? `https://img.youtube.com/vi/${m[1]}/mqdefault.jpg` : null
+}
 
 // Per-chipFamily gradient palette for the thumbnail placeholder
 const chipGradients = {
@@ -27,6 +36,9 @@ const FirmwareCard = ({ firmware, onClick }) => {
   const isPaid = firmware.requireKey === true
   const gradient = chipGradients[firmware.chipFamily] || chipGradients.ESP32
   const accentColor = chipColors[firmware.chipFamily] || '#2997ff'
+  const ytThumb = getYtThumbnail(firmware.youtube)
+  const [thumbError, setThumbError] = useState(false)
+  const showThumb = ytThumb && !thumbError
 
   return (
     <Card
@@ -67,50 +79,62 @@ const FirmwareCard = ({ firmware, onClick }) => {
       </Box>
 
       <CardActionArea sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-        {/* Thumbnail placeholder */}
-        <Box
-          sx={{
-            height: 100,
-            background: gradient,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            '&::after': {
-              content: '""',
+        {/* 16:9 Thumbnail */}
+        <Box sx={{ position: 'relative', width: '100%', paddingTop: '56.25%', overflow: 'hidden', background: gradient }}>
+          <Box
+            sx={{
               position: 'absolute',
               inset: 0,
-              background: `radial-gradient(circle at 50% 60%, ${accentColor}18 0%, transparent 70%)`,
-            },
-          }}
-        >
-          {/* Chip label as SVG-like glowing text in thumbnail */}
-          <Typography
-            sx={{
-              fontFamily: '"Roboto Mono", monospace',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              color: accentColor,
-              textShadow: `0 0 12px ${accentColor}`,
-              zIndex: 1,
-              opacity: 0.9,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            {firmware.chipFamily}
-          </Typography>
+            {showThumb ? (
+              <Box
+                component="img"
+                src={ytThumb}
+                alt={firmware.title}
+                onError={() => setThumbError(true)}
+                sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            ) : (
+              <>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: `radial-gradient(circle at 50% 60%, ${accentColor}18 0%, transparent 70%)`,
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontFamily: '"Roboto Mono", monospace',
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.15em',
+                    color: accentColor,
+                    textShadow: `0 0 14px ${accentColor}`,
+                    zIndex: 1,
+                  }}
+                >
+                  {firmware.chipFamily}
+                </Typography>
+              </>
+            )}
+          </Box>
         </Box>
 
-        <CardContent sx={{ flexGrow: 1, pt: 1.5, pb: '12px !important' }}>
+        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: 1.2, pb: '10px !important', px: 1.5 }}>
           {/* ChipFamily badge */}
           <Chip
             label={firmware.chipFamily}
             size="small"
             sx={{
-              mb: 1,
-              height: 20,
-              fontSize: '0.65rem',
+              alignSelf: 'flex-start',
+              mb: 0.75,
+              height: 18,
+              fontSize: '0.62rem',
               fontWeight: 700,
               letterSpacing: '0.06em',
               background: `${accentColor}18`,
@@ -125,14 +149,14 @@ const FirmwareCard = ({ firmware, onClick }) => {
             component="h3"
             fontWeight={600}
             sx={{
-              fontSize: '0.82rem',
-              lineHeight: 1.35,
+              flexGrow: 1,
+              fontSize: '0.8rem',
+              lineHeight: 1.4,
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               color: 'text.primary',
-              minHeight: '2.7em',
             }}
           >
             {firmware.title}
@@ -142,15 +166,14 @@ const FirmwareCard = ({ firmware, onClick }) => {
           {firmware.youtube && firmware.youtube !== 'tobe' && (
             <Box
               sx={{
-                mt: 1,
+                mt: 0.75,
                 display: 'flex',
                 alignItems: 'center',
                 gap: 0.5,
-                color: 'rgba(255,255,255,0.35)',
               }}
             >
               <YouTubeIcon sx={{ fontSize: '0.85rem', color: '#f44336' }} />
-              <Typography sx={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)' }}>
+              <Typography sx={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1 }}>
                 Xem video hướng dẫn
               </Typography>
             </Box>
