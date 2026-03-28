@@ -106,7 +106,7 @@ const Header = ({ onOpenSettings, flashing }) => {
                     {/* Facebook */}
                     <Box
                         component="a"
-                        href="https://www.facebook.com/mrvocsi"
+                        href="https://www.facebook.com/share/1CCjN9zD9G/?mibextid=wwXIfr"
                         target="_blank"
                         rel="noopener noreferrer"
                         sx={{

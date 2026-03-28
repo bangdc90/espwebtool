@@ -18,14 +18,22 @@ import ConfirmWindow from './components/ConfirmWindow'
 import Footer from './components/Footer'
 import DonateImage from './components/DonateImage'
 import ShoppingTab from './components/ShoppingTab'
+import PhicommTab from './components/PhicommTab'
 import WelcomeDialog from './components/WelcomeDialog'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import SpeakerIcon from '@mui/icons-material/Speaker'
 
 import PropTypes from 'prop-types'
 import { loadSettings, defaultSettings } from './lib/settings'
 
 // ─── Extra tabs appended to the firmware tab bar ─────────────────────────────────
 const EXTRA_TABS = [
+  {
+    id: 'phicomm',
+    label: 'Loa AI Phicomm',
+    icon: <SpeakerIcon sx={{ fontSize: 16 }} />,
+    content: <PhicommTab />,
+  },
   {
     id: 'shopping',
     label: 'Mua sắm',
@@ -53,7 +61,7 @@ const EXTRA_TABS = [
 // ─── Inner UI — rendered inside ConnectionProvider so it can call useConnection ─────
 const FlashUI = ({ settings, setSettings, output, addOutput }) => {
   const { espStub } = useConnection()
-  const [shoppingActive, setShoppingActive] = React.useState(false)
+  const [extraTabActive, setExtraTabActive] = React.useState(false)
   const [settingsOpen, setSettingsOpen] = React.useState(false)
   const [confirmProgram, setConfirmProgram] = React.useState(false)
   const [flashing, setFlashing] = React.useState(false)
@@ -189,12 +197,12 @@ const FlashUI = ({ settings, setSettings, output, addOutput }) => {
         <FirmwareGrid
           onStartFlash={handleStartFlash}
           extraTabs={EXTRA_TABS}
-          onActiveTabChange={(tabId) => setShoppingActive(tabId === 'shopping')}
+          onActiveTabChange={(tabId) => setExtraTabActive(EXTRA_TABS.some((t) => t.id === tabId))}
         />
       </Box>
 
-      {/* Output log — hide when shopping tab is active */}
-      {!shoppingActive && (
+      {/* Output log — hide when an extra tab is active */}
+      {!extraTabActive && (
         <Box sx={{ px: { xs: 2, md: 4 }, pb: 2 }}>
           <Output received={output} />
         </Box>
