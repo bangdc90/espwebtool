@@ -92,21 +92,24 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileD
     return result
   }, [firmwareList])
 
-  // All tabs: firmware + extra. defaultTabId tab moves to front on both mobile and desktop.
+  // All tabs: firmware + extra.
+  // Mobile:  mobileDefaultTabId first, defaultTabId second, rest follow.
+  // Desktop: defaultTabId first, rest follow (mobileDefaultTabId stays last as extraTab).
   const tabs = React.useMemo(() => {
     const all = [...fwTabs, ...extraTabs]
-    if (defaultTabId) {
-      const idx = all.findIndex((t) => t.id === defaultTabId)
-      if (idx > 0) {
-        const [tab] = all.splice(idx, 1)
-        all.unshift(tab)
+    if (isMobile && mobileDefaultTabId) {
+      // Step 1 — bring Arduino Fun to front
+      if (defaultTabId) {
+        const idx = all.findIndex((t) => t.id === defaultTabId)
+        if (idx > 0) { const [tab] = all.splice(idx, 1); all.unshift(tab) }
       }
-    } else if (isMobile && mobileDefaultTabId) {
+      // Step 2 — bring Shopping to front (pushes Arduino Fun to index 1)
       const idx = all.findIndex((t) => t.id === mobileDefaultTabId)
-      if (idx > 0) {
-        const [tab] = all.splice(idx, 1)
-        all.unshift(tab)
-      }
+      if (idx > 0) { const [tab] = all.splice(idx, 1); all.unshift(tab) }
+    } else if (defaultTabId) {
+      // Desktop — Arduino Fun first, Shopping remains last
+      const idx = all.findIndex((t) => t.id === defaultTabId)
+      if (idx > 0) { const [tab] = all.splice(idx, 1); all.unshift(tab) }
     }
     return all
   }, [fwTabs, extraTabs, isMobile, mobileDefaultTabId, defaultTabId])

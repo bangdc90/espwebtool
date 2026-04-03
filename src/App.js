@@ -199,6 +199,7 @@ const FlashUI = ({ settings, setSettings, output, addOutput }) => {
           extraTabs={EXTRA_TABS}
           onActiveTabChange={(tabId) => setExtraTabActive(EXTRA_TABS.some((t) => t.id === tabId))}
           defaultTabId="Arduino Fun"
+          mobileDefaultTabId="shopping"
         />
       </Box>
 

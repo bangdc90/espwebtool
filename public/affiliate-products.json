@@ -79,7 +79,7 @@
       },
       {
         "id": 203,
-        "url": "https://s.shopee.vn/3LMIc5QifY",
+        "url": "https://s.shopee.vn/3Vg1msC62l",
         "title": "ESP32 dev kit",
         "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m12svcbpaviza5.webp"
       },
@@ -110,24 +110,36 @@
     "products": [
       {
         "id": 301,
+        "url": "https://s.shopee.vn/7VCAJgEGpM",
+        "title": "Set điện trở cắm 30 loại",
+        "image": "https://down-vn.img.susercontent.com/file/fe8b1cb692032a728968dc97c5d3b218.webp"
+      },
+      {
+        "id": 302,
+        "url": "https://s.shopee.vn/3LMbsJm1io",
+        "title": "Tụ điện 470UF 25V loại tốt",
+        "image": "https://down-vn.img.susercontent.com/file/sg-11134201-7rdyj-lxtzadzvytbd8d.webp"
+      },
+      {
+        "id": 303,
         "url": "https://s.shopee.vn/7KsRNU8DZ8",
         "title": "Hộp điện 11x11x5cm",
         "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc3cwhjxb9m282.webp"
       },
       {
-        "id": 302,
+        "id": 304,
         "url": "https://s.shopee.vn/9fGXFv8vED",
         "title": "Pin Li-ion 18650 loại tốt",
         "image": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mlhocbqodh5b6c.webp"
       },
       {
-        "id": 303,
+        "id": 305,
         "url": "https://s.shopee.vn/8fNoyBkvI0",
         "title": "Động cơ máy photo Nidec 24H404H070",
         "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-looyxq83mngw74.webp"
       },
       {
-        "id": 304,
+        "id": 306,
         "url": "https://s.shopee.vn/9UtIgO72GL",
         "title": "Pin 2000mah 3.7V có bảo vệ",
         "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mcugy7wdyba437@resize_w900_nl.webp"
