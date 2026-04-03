@@ -104,6 +104,15 @@
     },
     {
       "tab": "Arduino Fun",
+      "title": "Xe Tự Cân Bằng Esp32",
+      "youtube": "https://www.youtube.com/watch?v=YEhdNh_iKPE",
+      "chipFamily": "ESP32",
+      "description": "Sử dụng thuật toán tối ưu LQR\nHỗ trợ đèn led RGB nhiều hiệu ứng\nĐiều khiển thông qua Wifi\nGiao diện UI hiện đại",
+      "path": "flash_backup.zip",
+      "address": "0"
+    },
+    {
+      "tab": "Arduino Fun",
       "title": "Trạm hàn Chuột (MOUSE Soldering Station)",
       "youtube": "https://youtu.be/S8o4g12h2Ko",
       "chipFamily": "ESP32C3",
