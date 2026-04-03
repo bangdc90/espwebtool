@@ -13,7 +13,7 @@ import TabBar from './TabBar'
 import FirmwareCard from './FirmwareCard'
 import FirmwareModal from './FirmwareModal'
 
-const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileDefaultTabId = null }) => {
+const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileDefaultTabId = null, defaultTabId = null }) => {
   const isMobile = useMediaQuery('(max-width:599px)')
   const [firmwareList, setFirmwareList] = useState([])
   const [manifestLoaded, setManifestLoaded] = useState(false)
@@ -74,7 +74,8 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileD
         tabs.push(tabId)
       }
     })
-    setActiveTab(isMobile && mobileDefaultTabId ? mobileDefaultTabId : (tabs[0] || null))
+    const preferredId = defaultTabId || (isMobile ? mobileDefaultTabId : null)
+    setActiveTab(preferredId && tabs.includes(preferredId) ? preferredId : (tabs[0] || null))
   }
 
   // Firmware-only tabs (derived from manifest)
@@ -91,10 +92,16 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileD
     return result
   }, [firmwareList])
 
-  // All tabs: firmware + extra. On mobile, mobileDefaultTabId tab moves to front.
+  // All tabs: firmware + extra. defaultTabId tab moves to front on both mobile and desktop.
   const tabs = React.useMemo(() => {
     const all = [...fwTabs, ...extraTabs]
-    if (isMobile && mobileDefaultTabId) {
+    if (defaultTabId) {
+      const idx = all.findIndex((t) => t.id === defaultTabId)
+      if (idx > 0) {
+        const [tab] = all.splice(idx, 1)
+        all.unshift(tab)
+      }
+    } else if (isMobile && mobileDefaultTabId) {
       const idx = all.findIndex((t) => t.id === mobileDefaultTabId)
       if (idx > 0) {
         const [tab] = all.splice(idx, 1)
@@ -102,7 +109,7 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileD
       }
     }
     return all
-  }, [fwTabs, extraTabs, isMobile, mobileDefaultTabId])
+  }, [fwTabs, extraTabs, isMobile, mobileDefaultTabId, defaultTabId])
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
@@ -294,6 +301,7 @@ const FirmwareGrid = ({ onStartFlash, extraTabs = [], onActiveTabChange, mobileD
 
 FirmwareGrid.propTypes = {
   mobileDefaultTabId: PropTypes.string,
+  defaultTabId: PropTypes.string,
   onStartFlash: PropTypes.func.isRequired,
   extraTabs: PropTypes.array,
   onActiveTabChange: PropTypes.func,
