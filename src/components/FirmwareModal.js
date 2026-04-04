@@ -283,7 +283,15 @@ const FirmwareModal = ({ firmware, open, onClose, onStartFlash, loadingStatus })
             icon={<UsbIcon fontSize="inherit" />}
             sx={{ mb: 2, fontSize: '0.8rem' }}
           >
-            Cắm dây USB vào mạch ESP32 rồi nhấn <strong>Kết Nối Thiết Bị</strong>. Không cần nhấn nút BOOT.
+            {firmware.chipFamily === 'ESP32' ? (
+              <>
+                Cắm dây USB vào mạch ESP32. Giữ chặt nút <strong>BOOT</strong> (không thả ra), bấm <strong>Kết Nối Thiết Bị</strong>, đến khi kết nối thành công thì thả nút <strong>BOOT</strong> ra.
+              </>
+            ) : (
+              <>
+                Cắm dây USB vào mạch ESP32 rồi nhấn <strong>Kết Nối Thiết Bị</strong>. Không cần nhấn nút BOOT.
+              </>
+            )}
           </Alert>
         )}
 
