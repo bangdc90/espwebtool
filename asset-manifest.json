@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.3fa337cf.css",
-    "main.js": "/static/js/main.f1ca5676.js",
+    "main.js": "/static/js/main.87d4ddf5.js",
     "static/media/loa-phicomm.jpg": "/static/media/loa-phicomm.6eb39cfc492742461498.jpg",
     "static/media/avatar.jpg": "/static/media/avatar.f23e96969d82d2d25417.jpg",
     "index.html": "/index.html",
     "main.3fa337cf.css.map": "/static/css/main.3fa337cf.css.map",
-    "main.f1ca5676.js.map": "/static/js/main.f1ca5676.js.map"
+    "main.87d4ddf5.js.map": "/static/js/main.87d4ddf5.js.map"
   },
   "entrypoints": [
     "static/css/main.3fa337cf.css",
-    "static/js/main.f1ca5676.js"
+    "static/js/main.87d4ddf5.js"
   ]
 }
