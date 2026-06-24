@@ -105,7 +105,7 @@
     {
       "tab": "Arduino Fun",
       "title": "Mạch điều khiển quạt NIDEC đa chức năng với ESP32",
-      "youtube": "https://youtu.be/f3_od7bHSk0",
+      "youtube": "https://youtu.be/eIHiCNTljMM",
       "chipFamily": "ESP32",
       "description": "Điều khiển động cơ Nidec chế quạt\nHỗ trợ điều khiển từ smartphone\nĐiều khiển thông remote, núm xoay Rotary\nGiao diện UI hiện đại",
       "path": "esp32_nidec_fan.zip",
